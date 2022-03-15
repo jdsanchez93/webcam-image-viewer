@@ -1,0 +1,7 @@
+<div class="new-image-container">
+    <button mat-raised-button (click)="requestNewImage()">New Image</button>
+    
+    <ng-container *ngIf="this.currentImage$ | async as i">
+        <img [src]="i.url">
+    </ng-container>
+</div>
