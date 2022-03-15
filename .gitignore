@@ -36,9 +36,9 @@ chrome-profiler-events*.json
 /ClientApp/connect.lock
 /ClientApp/coverage
 /ClientApp/libpeerconnection.log
-/ClientAppnpm-debug.log
-/ClientAppyarn-error.log
-/ClientApptestem.log
+/ClientApp/npm-debug.log
+/ClientApp/yarn-error.log
+/ClientApp/testem.log
 /ClientApp/typings
 
 # System Files
