@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: 'image-viewer', loadChildren: () => import('./image-viewer/image-viewer.module').then(m => m.ImageViewerModule) },
+  { path: '**', redirectTo: 'image-viewer' },
 ];
 
 @NgModule({
