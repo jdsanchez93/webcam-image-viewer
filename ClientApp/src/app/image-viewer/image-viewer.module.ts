@@ -8,6 +8,7 @@ import { imageViewerFeatureKey, imageViewerReducer } from './state/image-viewer.
 import { ImageViewerEffects } from './state/image-viewer.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { StoreModule } from '@ngrx/store';
     ImageViewerRoutingModule,
     StoreModule.forFeature(imageViewerFeatureKey, imageViewerReducer),
     EffectsModule.forFeature([ImageViewerEffects]),
-    MatButtonModule
+    MatButtonModule,
+    MatProgressSpinnerModule
   ]
 })
 export class ImageViewerModule { }

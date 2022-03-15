@@ -7,3 +7,8 @@ export const selectCurrentImage = createSelector(
   selectImageViewerFeature,
   state => state.currentImage
 );
+
+export const selectIsLoading = createSelector(
+  selectImageViewerFeature,
+  state => state.loading
+);

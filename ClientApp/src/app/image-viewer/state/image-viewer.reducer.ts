@@ -23,4 +23,7 @@ export const imageViewerReducer = createReducer(
         loading: false,
         currentImage: currentImage
     })),
+    on(ImageViewerActions.loadNewImage, (state) => {
+        return { ...state, loading: true }
+    })
 )
