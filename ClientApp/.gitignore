@@ -8,7 +8,7 @@
 /bazel-out
 
 # dependencies
-/ClientApp/node_modules
+./ClientApp/node_modules
 
 # profiling files
 chrome-profiler-events*.json
@@ -31,15 +31,15 @@ chrome-profiler-events*.json
 .history/*
 
 # misc
-/ClientApp/.angular/cache
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-npm-debug.log
-yarn-error.log
-testem.log
-/typings
+./ClientApp/.angular/cache
+./ClientApp/.sass-cache
+./ClientApp/connect.lock
+./ClientApp/coverage
+./ClientApp/libpeerconnection.log
+./ClientAppnpm-debug.log
+./ClientAppyarn-error.log
+./ClientApptestem.log
+./ClientApp/typings
 
 # System Files
 .DS_Store
