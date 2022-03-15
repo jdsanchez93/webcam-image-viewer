@@ -76,7 +76,8 @@
               "browserTarget": "webcam-image-viewer:build:production"
             },
             "development": {
-              "browserTarget": "webcam-image-viewer:build:development"
+              "browserTarget": "webcam-image-viewer:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
