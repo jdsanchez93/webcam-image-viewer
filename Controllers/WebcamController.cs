@@ -2,10 +2,10 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.SQS;
 using Amazon.SQS.Model;
-using garage_webcam_api.Entities;
+using webcam_image_viewer.Entities;
 using Microsoft.AspNetCore.Mvc;
 
-namespace garage_webcam_api.Controllers;
+namespace webcam_image_viewer.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

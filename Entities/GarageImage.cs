@@ -1,4 +1,4 @@
-namespace garage_webcam_api.Entities;
+namespace webcam_image_viewer.Entities;
 
 public class GarageImage
 {
