@@ -13,13 +13,15 @@ public class WebcamController : ControllerBase
 {
     private readonly ILogger<WebcamController> _logger;
     private readonly IConfiguration _configuration;
+    private readonly WebcamDbContext _context;
 
     public const int MAX_RETRIES = 5;
 
-    public WebcamController(ILogger<WebcamController> logger, IConfiguration configuration)
+    public WebcamController(ILogger<WebcamController> logger, IConfiguration configuration, WebcamDbContext context)
     {
         _logger = logger;
         _configuration = configuration;
+        _context = context;
     }
 
     [HttpGet]
@@ -42,12 +44,11 @@ public class WebcamController : ControllerBase
 
         var presignedUrl = GeneratePreSignedURL(bucketName, s3key, s3Client, 1);
 
-        var ret = new GarageImage()
-        {
-            Key = imageId,
-            Url = presignedUrl
-        };
-        return Ok(ret);
+        // TODO
+        var garageImage = _context.GarageImages.FirstOrDefault(g => g.GarageImageId == 1);
+        if (garageImage != null)
+            garageImage.PresignedUrl = presignedUrl;
+        return Ok(garageImage);
     }
 
     //
