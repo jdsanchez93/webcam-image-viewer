@@ -11,7 +11,7 @@ using webcam_image_viewer;
 namespace webcam_image_viewer.Migrations
 {
     [DbContext(typeof(WebcamDbContext))]
-    [Migration("20220325225705_Initial")]
+    [Migration("20220326175541_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,7 +38,7 @@ namespace webcam_image_viewer.Migrations
 
                     b.HasKey("GarageImageId");
 
-                    b.ToTable("GarageImages");
+                    b.ToTable("GarageImage");
                 });
 #pragma warning restore 612, 618
         }

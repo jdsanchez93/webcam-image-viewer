@@ -36,7 +36,7 @@ namespace webcam_image_viewer.Migrations
 
                     b.HasKey("GarageImageId");
 
-                    b.ToTable("GarageImages");
+                    b.ToTable("GarageImage");
                 });
 #pragma warning restore 612, 618
         }

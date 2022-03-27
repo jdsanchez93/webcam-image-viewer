@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace webcam_image_viewer.Entities;
 
+[Table("GarageImage")]
 public class GarageImage
 {
     public int GarageImageId { get; set; }

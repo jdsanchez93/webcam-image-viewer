@@ -14,7 +14,7 @@ namespace webcam_image_viewer.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "GarageImages",
+                name: "GarageImage",
                 columns: table => new
                 {
                     GarageImageId = table.Column<int>(type: "int", nullable: false)
@@ -26,7 +26,7 @@ namespace webcam_image_viewer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GarageImages", x => x.GarageImageId);
+                    table.PrimaryKey("PK_GarageImage", x => x.GarageImageId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
         }
@@ -34,7 +34,7 @@ namespace webcam_image_viewer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GarageImages");
+                name: "GarageImage");
         }
     }
 }
