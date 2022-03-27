@@ -27,28 +27,42 @@ public class WebcamController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var queueName = _configuration["Aws:QueueUrl"];
-        var bucketName = _configuration["Aws:BucketName"];
-        var sqsClient = new AmazonSQSClient();
+        try
+        {
+            var queueName = _configuration["Aws:QueueUrl"];
+            var bucketName = _configuration["Aws:BucketName"];
+            var sqsClient = new AmazonSQSClient();
 
-        var imageId = Guid.NewGuid().ToString();
-        await SendMessage(sqsClient, queueName, imageId);
+            var imageId = Guid.NewGuid().ToString();
+            await SendMessage(sqsClient, queueName, imageId);
 
-        var s3Client = new AmazonS3Client();
+            var s3Client = new AmazonS3Client();
 
-        var s3key = imageId + ".png";
+            var s3key = imageId + ".png";
 
 
-        var b = await DoesPrefixExist(s3Client, bucketName, s3key);
-        Console.WriteLine($"DoesPrefixExist {b}");
+            var b = await DoesPrefixExist(s3Client, bucketName, s3key);
+            Console.WriteLine($"DoesPrefixExist {b}");
 
-        var presignedUrl = GeneratePreSignedURL(bucketName, s3key, s3Client, 1);
+            var presignedUrl = GeneratePreSignedURL(bucketName, s3key, s3Client, 1);
 
-        // TODO
-        var garageImage = _context.GarageImages.FirstOrDefault(g => g.GarageImageId == 1);
-        if (garageImage != null)
-            garageImage.PresignedUrl = presignedUrl;
-        return Ok(garageImage);
+            var garageImage = new GarageImage()
+            {
+                S3Key = s3key,
+                ImageDate = DateTime.Now,
+                PresignedUrl = presignedUrl,
+            };
+
+            _context.GarageImages.Add(garageImage);
+            _context.SaveChanges();
+            return Ok(garageImage);
+        }
+        catch (System.Exception e)
+        {
+
+            _logger.LogError("Get", e);
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
     }
 
     //
