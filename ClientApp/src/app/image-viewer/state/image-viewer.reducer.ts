@@ -12,8 +12,7 @@ export interface ImageViewerState {
 export const initialState: ImageViewerState = {
     loading: false,
     currentImage: {
-        key: '',
-        url: ''
+        garageImageId: 0
     }
 }
 

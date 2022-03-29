@@ -1,4 +1,7 @@
 export interface GarageImage {
-    key: string,
-    url: string
+    garageImageId: number;
+    s3Key?: string;
+    imageDate?: Date;
+    numberOfCars?: number;
+    presignedUrl?: string;
 }

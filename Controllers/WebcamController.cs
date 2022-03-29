@@ -2,10 +2,10 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.SQS;
 using Amazon.SQS.Model;
-using garage_webcam_api.Entities;
+using webcam_image_viewer.Entities;
 using Microsoft.AspNetCore.Mvc;
 
-namespace garage_webcam_api.Controllers;
+namespace webcam_image_viewer.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -13,41 +13,56 @@ public class WebcamController : ControllerBase
 {
     private readonly ILogger<WebcamController> _logger;
     private readonly IConfiguration _configuration;
+    private readonly WebcamDbContext _context;
 
     public const int MAX_RETRIES = 5;
 
-    public WebcamController(ILogger<WebcamController> logger, IConfiguration configuration)
+    public WebcamController(ILogger<WebcamController> logger, IConfiguration configuration, WebcamDbContext context)
     {
         _logger = logger;
         _configuration = configuration;
+        _context = context;
     }
 
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var queueName = _configuration["Aws:QueueUrl"];
-        var bucketName = _configuration["Aws:BucketName"];
-        var sqsClient = new AmazonSQSClient();
-
-        var imageId = Guid.NewGuid().ToString();
-        await SendMessage(sqsClient, queueName, imageId);
-
-        var s3Client = new AmazonS3Client();
-
-        var s3key = imageId + ".png";
-
-
-        var b = await DoesPrefixExist(s3Client, bucketName, s3key);
-        Console.WriteLine($"DoesPrefixExist {b}");
-
-        var presignedUrl = GeneratePreSignedURL(bucketName, s3key, s3Client, 1);
-
-        var ret = new GarageImage()
+        try
         {
-            Key = imageId,
-            Url = presignedUrl
-        };
-        return Ok(ret);
+            var queueName = _configuration["Aws:QueueUrl"];
+            var bucketName = _configuration["Aws:BucketName"];
+            var sqsClient = new AmazonSQSClient();
+
+            var imageId = Guid.NewGuid().ToString();
+            await SendMessage(sqsClient, queueName, imageId);
+
+            var s3Client = new AmazonS3Client();
+
+            var s3key = imageId + ".png";
+
+
+            var b = await DoesPrefixExist(s3Client, bucketName, s3key);
+            Console.WriteLine($"DoesPrefixExist {b}");
+
+            var presignedUrl = GeneratePreSignedURL(bucketName, s3key, s3Client, 1);
+
+            var garageImage = new GarageImage()
+            {
+                S3Key = s3key,
+                ImageDate = DateTime.Now,
+                PresignedUrl = presignedUrl,
+            };
+
+            _context.GarageImages.Add(garageImage);
+            _context.SaveChanges();
+            return Ok(garageImage);
+        }
+        catch (System.Exception e)
+        {
+
+            _logger.LogError("Get", e);
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
     }
 
     //
