@@ -12,4 +12,9 @@ export class WebcamService {
 
   public getNewImage(): Observable<GarageImage> {
     return this.http.get<GarageImage>(`api/Webcam`);
-  }}
+  }
+
+  public getHistory(): Observable<GarageImage[]> {
+    return this.http.get<GarageImage[]>(`api/Webcam/History`);
+  }
+}

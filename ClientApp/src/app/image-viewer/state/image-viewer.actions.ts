@@ -4,3 +4,7 @@ import { GarageImage } from '../image.models';
 export const loadNewImage = createAction('[Image Viewer Api] Load New Image');
 export const loadNewImageSuccess = createAction('[Image Viewer Api] Load New Image Success', props<{ currentImage: GarageImage }>());
 export const loadNewImageError = createAction('[Image Viewer Api] Load New Image Error');
+
+export const loadHistory = createAction('[Image Api] Load History');
+export const loadHistorySuccess = createAction('[Image Api] Load History Success', props<{ history: GarageImage[] }>());
+export const loadHistoryError = createAction('[Image Api] Load History Error');

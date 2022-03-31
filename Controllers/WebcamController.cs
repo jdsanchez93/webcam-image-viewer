@@ -4,6 +4,7 @@ using Amazon.SQS;
 using Amazon.SQS.Model;
 using webcam_image_viewer.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace webcam_image_viewer.Controllers;
 
@@ -49,7 +50,7 @@ public class WebcamController : ControllerBase
             var garageImage = new GarageImage()
             {
                 S3Key = s3key,
-                ImageDate = DateTime.Now,
+                ImageDate = DateTime.UtcNow,
                 PresignedUrl = presignedUrl,
             };
 
@@ -140,6 +141,28 @@ public class WebcamController : ControllerBase
         {
             this._logger.LogError(e, "Error calling ListObjectsV2Async");
             return false;
+        }
+    }
+
+    [HttpGet("History")]
+    public async Task<IActionResult> GetHistory()
+    {
+        try
+        {
+            var history = await _context.GarageImages.OrderByDescending(x => x.ImageDate).Take(10).ToListAsync();
+
+ 
+            var bucketName = _configuration["Aws:BucketName"];
+            var s3Client = new AmazonS3Client();
+            // TODO fix warning
+            history.ForEach(x => x.PresignedUrl = GeneratePreSignedURL(bucketName, x.S3Key, s3Client, 1));
+            return Ok(history);
+        }
+        catch (System.Exception e)
+        {
+
+            _logger.LogError("GetHistory", e);
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 }

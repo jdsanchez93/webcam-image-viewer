@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, catchError, delay } from 'rxjs/operators';
 import { WebcamService } from '../webcam.service';
-import { loadNewImage, loadNewImageError, loadNewImageSuccess } from './image-viewer.actions';
+import { loadHistory, loadHistoryError, loadHistorySuccess, loadNewImage, loadNewImageError, loadNewImageSuccess } from './image-viewer.actions';
 
 @Injectable()
 export class ImageViewerEffects {
@@ -12,6 +12,15 @@ export class ImageViewerEffects {
     mergeMap(() => this.webcamService.getNewImage().pipe(
       map(x => loadNewImageSuccess({ currentImage: x })),
       catchError(x => [loadNewImageError()])
+    ))
+  ));
+
+
+  getImageHistory$ = createEffect(() => this.actions$.pipe(
+    ofType(loadHistory),
+    mergeMap(() => this.webcamService.getHistory().pipe(
+      map(x => loadHistorySuccess({ history: x })),
+      catchError(x => [loadHistoryError()])
     ))
   ));
 
