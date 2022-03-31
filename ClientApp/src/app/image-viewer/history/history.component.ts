@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { EditorFormComponent } from '../editor-form/editor-form.component';
 import { GarageImage } from '../image.models';
-import { loadHistory } from '../state/image-viewer.actions';
+import { loadHistory, updateImage } from '../state/image-viewer.actions';
 import { selectHistory } from '../state/image-viewer.selectors';
 
 @Component({
@@ -12,6 +13,8 @@ import { selectHistory } from '../state/image-viewer.selectors';
 })
 export class HistoryComponent implements OnInit {
   history$: Observable<GarageImage[]> = this.store.select(selectHistory);
+  @ViewChildren(EditorFormComponent) viewChildren!: QueryList<EditorFormComponent>;
+  step: number = 0;
 
   constructor(private store: Store) { }
 
@@ -19,8 +22,15 @@ export class HistoryComponent implements OnInit {
     this.store.dispatch(loadHistory());
   }
 
-  saveImage() {
-    // TODO
+  saveImage(garageImageId: number) {
+    let partialGarageImage = this.viewChildren.find(x => x.garageImage.garageImageId === garageImageId)?.getFormData();
+    if (partialGarageImage !== undefined) {
+      this.store.dispatch(updateImage({ garageImageId: garageImageId, partialImage: partialGarageImage }));
+    }
+  }
+
+  setStep(index: number) {
+    this.step = index;
   }
 
 }

@@ -4,19 +4,24 @@
 
     <mat-accordion>
 
-        <mat-expansion-panel *ngFor="let x of history$ | async">
+        <mat-expansion-panel *ngFor="let x of history$ | async; let i = index" [expanded]="step === i"
+            (opened)="setStep(i)">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     {{x.imageDate + 'Z' | date: 'MMM d, y, hh:mm:ss a' }}
                 </mat-panel-title>
+                <mat-panel-description>
+                    {{ x.numberOfCars === null ? 'No data' : x.numberOfCars + ' car(s)' }}
+                </mat-panel-description>
             </mat-expansion-panel-header>
 
             <ng-template matExpansionPanelContent>
                 <img [src]="x.presignedUrl" style="object-fit: cover; width: 100%;">
+                <app-editor-form [garageImage]="x"></app-editor-form>
             </ng-template>
 
             <mat-action-row>
-                <button mat-button color="primary" (click)="saveImage()">Save</button>
+                <button mat-raised-button color="primary" (click)="saveImage(x.garageImageId)">Save</button>
             </mat-action-row>
         </mat-expansion-panel>
 
