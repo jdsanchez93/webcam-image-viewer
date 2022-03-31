@@ -23,7 +23,9 @@
       <span>webcam-image-viewer</span>
     </mat-toolbar>
     
-    <router-outlet></router-outlet>
+    <div [ngStyle]="{'padding':(isHandset$ | async) ? '15px 15px' : '20px 50px' }">
+      <router-outlet></router-outlet>
+    </div>
 
   </mat-sidenav-content>
 </mat-sidenav-container>
