@@ -5,6 +5,7 @@ using Amazon.SQS.Model;
 using webcam_image_viewer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace webcam_image_viewer.Controllers;
 
@@ -151,7 +152,7 @@ public class WebcamController : ControllerBase
         {
             var history = await _context.GarageImages.OrderByDescending(x => x.ImageDate).Take(10).ToListAsync();
 
- 
+
             var bucketName = _configuration["Aws:BucketName"];
             var s3Client = new AmazonS3Client();
             // TODO fix warning
@@ -162,6 +163,25 @@ public class WebcamController : ControllerBase
         {
 
             _logger.LogError("GetHistory", e);
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    }
+
+    [HttpPatch("{id}")]
+    public IActionResult Patch([FromRoute] int id, [FromBody] JsonPatchDocument<GarageImage> patchDoc)
+    {
+        try
+        {
+            var i = _context.GarageImages.Find(id);
+            if (i == null)
+                return NotFound();
+            patchDoc.ApplyTo(i);
+            _context.SaveChanges();
+            return NoContent();
+        }
+        catch (System.Exception e)
+        {
+            _logger.LogError("Patch", e);
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
