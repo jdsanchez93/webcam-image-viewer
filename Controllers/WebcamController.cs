@@ -75,7 +75,7 @@ public class WebcamController : ControllerBase
         SendMessageResponse responseSendMsg = await sqsClient.SendMessageAsync(qUrl, messageBody);
     }
 
-    private static string GeneratePreSignedURL(string bucketName, string objectKey, AmazonS3Client s3Client, double duration)
+    private static string GeneratePreSignedURL(string bucketName, string? objectKey, AmazonS3Client s3Client, double duration)
     {
         string urlString = "";
         try
@@ -152,10 +152,8 @@ public class WebcamController : ControllerBase
         {
             var history = await _context.GarageImages.OrderByDescending(x => x.ImageDate).Take(10).ToListAsync();
 
-
             var bucketName = _configuration["Aws:BucketName"];
             var s3Client = new AmazonS3Client();
-            // TODO fix warning
             history.ForEach(x => x.PresignedUrl = GeneratePreSignedURL(bucketName, x.S3Key, s3Client, 1));
             return Ok(history);
         }
