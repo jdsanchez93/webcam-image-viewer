@@ -12,4 +12,22 @@ export class WebcamService {
 
   public getNewImage(): Observable<GarageImage> {
     return this.http.get<GarageImage>(`api/Webcam`);
-  }}
+  }
+
+  public getHistory(): Observable<GarageImage[]> {
+    return this.http.get<GarageImage[]>(`api/Webcam/History`);
+  }
+
+  public patchGarageImage(garageImageId: number, partialImage: Partial<GarageImage>): Observable<any> {
+    // TODO move this to central location
+    // TODO consider fixing cast to any
+    const patchObj = Object.keys(partialImage).map(key => (
+      {
+        'path': `/${key}`,
+        'op': 'replace',
+        'value': (partialImage as any)[key]
+      })
+    );
+    return this.http.patch(`api/Webcam/${garageImageId}`, patchObj);
+  }
+}

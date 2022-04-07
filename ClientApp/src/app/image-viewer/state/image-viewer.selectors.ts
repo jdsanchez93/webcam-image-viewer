@@ -12,3 +12,8 @@ export const selectIsLoading = createSelector(
   selectImageViewerFeature,
   state => state.loading
 );
+
+export const selectHistory = createSelector(
+  selectImageViewerFeature,
+  state => state.mostRecentImages
+);

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, catchError, delay } from 'rxjs/operators';
+import { map, mergeMap, catchError } from 'rxjs/operators';
 import { WebcamService } from '../webcam.service';
-import { loadNewImage, loadNewImageError, loadNewImageSuccess } from './image-viewer.actions';
+import { loadHistory, loadHistoryError, loadHistorySuccess, loadNewImage, loadNewImageError, loadNewImageSuccess, updateImage, updateImageError, updateImageSuccess } from './image-viewer.actions';
 
 @Injectable()
 export class ImageViewerEffects {
@@ -15,8 +16,28 @@ export class ImageViewerEffects {
     ))
   ));
 
+  getImageHistory$ = createEffect(() => this.actions$.pipe(
+    ofType(loadHistory),
+    mergeMap(() => this.webcamService.getHistory().pipe(
+      map(x => loadHistorySuccess({ history: x })),
+      catchError(x => [loadHistoryError()])
+    ))
+  ));
+
+  updateImage$ = createEffect(() => this.actions$.pipe(
+    ofType(updateImage),
+    mergeMap(action => this.webcamService.patchGarageImage(action.garageImageId, action.partialImage).pipe(
+      map(() => {
+        this.snackBar.open('Saved!', undefined, { duration: 1000 });
+        return updateImageSuccess({ garageImageId: action.garageImageId, partialImage: action.partialImage })
+      }),
+      catchError(() => [updateImageError()])
+    ))
+  ));
+
   constructor(
     private actions$: Actions,
-    private webcamService: WebcamService
+    private webcamService: WebcamService,
+    private snackBar: MatSnackBar
   ) { }
 }

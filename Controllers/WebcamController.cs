@@ -4,6 +4,8 @@ using Amazon.SQS;
 using Amazon.SQS.Model;
 using webcam_image_viewer.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace webcam_image_viewer.Controllers;
 
@@ -49,7 +51,7 @@ public class WebcamController : ControllerBase
             var garageImage = new GarageImage()
             {
                 S3Key = s3key,
-                ImageDate = DateTime.Now,
+                ImageDate = DateTime.UtcNow,
                 PresignedUrl = presignedUrl,
             };
 
@@ -73,7 +75,7 @@ public class WebcamController : ControllerBase
         SendMessageResponse responseSendMsg = await sqsClient.SendMessageAsync(qUrl, messageBody);
     }
 
-    private static string GeneratePreSignedURL(string bucketName, string objectKey, AmazonS3Client s3Client, double duration)
+    private static string GeneratePreSignedURL(string bucketName, string? objectKey, AmazonS3Client s3Client, double duration)
     {
         string urlString = "";
         try
@@ -140,6 +142,45 @@ public class WebcamController : ControllerBase
         {
             this._logger.LogError(e, "Error calling ListObjectsV2Async");
             return false;
+        }
+    }
+
+    [HttpGet("History")]
+    public async Task<IActionResult> GetHistory()
+    {
+        try
+        {
+            var history = await _context.GarageImages.OrderByDescending(x => x.ImageDate).Take(10).ToListAsync();
+
+            var bucketName = _configuration["Aws:BucketName"];
+            var s3Client = new AmazonS3Client();
+            history.ForEach(x => x.PresignedUrl = GeneratePreSignedURL(bucketName, x.S3Key, s3Client, 1));
+            return Ok(history);
+        }
+        catch (System.Exception e)
+        {
+
+            _logger.LogError("GetHistory", e);
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    }
+
+    [HttpPatch("{id}")]
+    public IActionResult Patch([FromRoute] int id, [FromBody] JsonPatchDocument<GarageImage> patchDoc)
+    {
+        try
+        {
+            var i = _context.GarageImages.Find(id);
+            if (i == null)
+                return NotFound();
+            patchDoc.ApplyTo(i);
+            _context.SaveChanges();
+            return NoContent();
+        }
+        catch (System.Exception e)
+        {
+            _logger.LogError("Patch", e);
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 }

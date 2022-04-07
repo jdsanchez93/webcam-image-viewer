@@ -9,11 +9,20 @@ import { ImageViewerEffects } from './state/image-viewer.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { HistoryComponent } from './history/history.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { ReactiveFormsModule } from '@angular/forms';
+import { EditorFormComponent } from './editor-form/editor-form.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({
   declarations: [
-    RequestNewImageComponent
+    RequestNewImageComponent,
+    HistoryComponent,
+    EditorFormComponent
   ],
   imports: [
     CommonModule,
@@ -21,7 +30,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     StoreModule.forFeature(imageViewerFeatureKey, imageViewerReducer),
     EffectsModule.forFeature([ImageViewerEffects]),
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatSnackBarModule
   ]
 })
 export class ImageViewerModule { }
