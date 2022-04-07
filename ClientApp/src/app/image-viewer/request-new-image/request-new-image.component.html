@@ -7,7 +7,9 @@
 
     <ng-template #elseBlock>
         <ng-container *ngIf="this.currentImage$ | async as i">
-            <img [src]="i.presignedUrl">
+            <div>
+                <img style="object-fit: cover; width: 100%;" [src]="i.presignedUrl">
+            </div>
         </ng-container>
     </ng-template>
 </div>
