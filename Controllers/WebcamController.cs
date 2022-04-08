@@ -43,8 +43,14 @@ public class WebcamController : ControllerBase
             var s3key = imageId + ".png";
 
 
-            var b = await DoesPrefixExist(s3Client, bucketName, s3key);
-            Console.WriteLine($"DoesPrefixExist {b}");
+            var s3ObjectExists = await DoesPrefixExist(s3Client, bucketName, s3key);
+
+            Console.WriteLine($"DoesPrefixExist {s3ObjectExists}");
+
+            if (!s3ObjectExists)
+            {
+                return NotFound(s3key);
+            }
 
             var presignedUrl = GeneratePreSignedURL(bucketName, s3key, s3Client, 1);
 
