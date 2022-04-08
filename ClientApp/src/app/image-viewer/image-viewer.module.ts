@@ -16,13 +16,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditorFormComponent } from './editor-form/editor-form.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { PiStatusComponent } from './pi-status/pi-status.component';
 
 
 @NgModule({
   declarations: [
     RequestNewImageComponent,
     HistoryComponent,
-    EditorFormComponent
+    EditorFormComponent,
+    PiStatusComponent
   ],
   imports: [
     CommonModule,

@@ -16,7 +16,7 @@ export class ImageViewerEffects {
       map(x => loadNewImageSuccess({ currentImage: x })),
       catchError((x: HttpErrorResponse) => {
         this.snackBar.open(`Error loading new image!`, 'Check pi').onAction().subscribe(() => {
-          this.router.navigateByUrl('image-viewer/history');
+          this.router.navigateByUrl('image-viewer/pi-status');
         });
         return [loadNewImageError()]
       })
