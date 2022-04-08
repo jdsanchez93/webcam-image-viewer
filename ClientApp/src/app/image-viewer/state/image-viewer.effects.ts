@@ -1,5 +1,7 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 import { WebcamService } from '../webcam.service';
@@ -12,7 +14,12 @@ export class ImageViewerEffects {
     ofType(loadNewImage),
     mergeMap(() => this.webcamService.getNewImage().pipe(
       map(x => loadNewImageSuccess({ currentImage: x })),
-      catchError(x => [loadNewImageError()])
+      catchError((x: HttpErrorResponse) => {
+        this.snackBar.open(`Error loading new image!`, 'Check pi').onAction().subscribe(() => {
+          this.router.navigateByUrl('image-viewer/history');
+        });
+        return [loadNewImageError()]
+      })
     ))
   ));
 
@@ -38,6 +45,7 @@ export class ImageViewerEffects {
   constructor(
     private actions$: Actions,
     private webcamService: WebcamService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) { }
 }

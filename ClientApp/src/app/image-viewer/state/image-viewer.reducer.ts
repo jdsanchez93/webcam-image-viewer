@@ -40,4 +40,7 @@ export const imageViewerReducer = createReducer(
         });
         return { ...state, mostRecentImages: updatedImages };
     }),
+    on(ImageViewerActions.loadNewImageError, (state) => {
+        return { ...state, loading: false }
+    })
 )
