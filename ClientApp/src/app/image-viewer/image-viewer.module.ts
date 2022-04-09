@@ -17,7 +17,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { EditorFormComponent } from './editor-form/editor-form.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { PiStatusComponent } from './pi-status/pi-status.component';
-
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,9 @@ import { PiStatusComponent } from './pi-status/pi-status.component';
     MatFormFieldModule,
     MatSelectModule,
     ReactiveFormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatIconModule,
+    MatCardModule
   ]
 })
 export class ImageViewerModule { }

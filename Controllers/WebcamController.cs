@@ -141,7 +141,7 @@ public class WebcamController : ControllerBase
 
             } while (retry && (retries < MAX_RETRIES));
 
-            return retry;
+            return !retry;
 
         }
         catch (System.Exception e)
@@ -187,6 +187,34 @@ public class WebcamController : ControllerBase
         {
             _logger.LogError("Patch", e);
             return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    }
+
+    [HttpGet("PiStatus")]
+    public async Task<IActionResult> GetPiStatus()
+    {
+        try
+        {
+            var queueName = _configuration["Aws:QueueUrl"];
+            var sqsClient = new AmazonSQSClient();
+            ReceiveMessageRequest request = new ReceiveMessageRequest
+            {
+                WaitTimeSeconds = 0,
+                QueueUrl = queueName,
+            };
+            var x = await sqsClient.ReceiveMessageAsync(request);
+
+            _logger.LogInformation($"Messages in queue: {x.Messages.Count}");
+            if (x.Messages.Count() == 0)
+            {
+                return Ok("Queue is empty");
+            }
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, $"Messages in queue: {x.Messages.Count}");
+        }
+        catch (System.Exception e)
+        {
+            _logger.LogError("GetPiStatus", e);
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
     }
 }

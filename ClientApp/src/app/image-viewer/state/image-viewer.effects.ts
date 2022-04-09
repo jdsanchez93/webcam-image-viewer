@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 import { WebcamService } from '../webcam.service';
-import { loadHistory, loadHistoryError, loadHistorySuccess, loadNewImage, loadNewImageError, loadNewImageSuccess, updateImage, updateImageError, updateImageSuccess } from './image-viewer.actions';
+import { loadHistory, loadHistoryError, loadHistorySuccess, loadNewImage, loadNewImageError, loadNewImageSuccess, loadPiStatus, loadPiStatusError, loadPiStatusSuccess, updateImage, updateImageError, updateImageSuccess } from './image-viewer.actions';
 
 @Injectable()
 export class ImageViewerEffects {
@@ -39,6 +39,16 @@ export class ImageViewerEffects {
         return updateImageSuccess({ garageImageId: action.garageImageId, partialImage: action.partialImage })
       }),
       catchError(() => [updateImageError()])
+    ))
+  ));
+
+  getPiStatus$ = createEffect(() => this.actions$.pipe(
+    ofType(loadPiStatus),
+    mergeMap(() => this.webcamService.getPiStatus().pipe(
+      map(x => loadPiStatusSuccess({ piStatus: x })),
+      catchError((x: HttpErrorResponse) => {
+        return [loadPiStatusError({ httpErrorResponse: x })]
+      })
     ))
   ));
 
