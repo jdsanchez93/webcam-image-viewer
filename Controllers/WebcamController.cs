@@ -190,8 +190,8 @@ public class WebcamController : ControllerBase
         }
     }
 
-    [HttpGet("PiStatus")]
-    public async Task<IActionResult> GetPiStatus()
+    [HttpGet("QueueStatus")]
+    public async Task<IActionResult> GetQueueStatus()
     {
         try
         {
@@ -213,7 +213,7 @@ public class WebcamController : ControllerBase
         }
         catch (System.Exception e)
         {
-            _logger.LogError("GetPiStatus", e);
+            _logger.LogError("GetQueueStatus", e);
             return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
     }

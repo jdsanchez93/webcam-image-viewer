@@ -16,7 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditorFormComponent } from './editor-form/editor-form.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { PiStatusComponent } from './pi-status/pi-status.component';
+import { QueueStatusComponent } from './queue-status/queue-status.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 
@@ -25,7 +25,7 @@ import { MatCardModule } from '@angular/material/card';
     RequestNewImageComponent,
     HistoryComponent,
     EditorFormComponent,
-    PiStatusComponent
+    QueueStatusComponent
   ],
   imports: [
     CommonModule,

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 import { WebcamService } from '../webcam.service';
-import { loadHistory, loadHistoryError, loadHistorySuccess, loadNewImage, loadNewImageError, loadNewImageSuccess, loadPiStatus, loadPiStatusError, loadPiStatusSuccess, updateImage, updateImageError, updateImageSuccess } from './image-viewer.actions';
+import { loadHistory, loadHistoryError, loadHistorySuccess, loadNewImage, loadNewImageError, loadNewImageSuccess, loadQueueStatus, loadQueueStatusError, loadQueueStatusSuccess, updateImage, updateImageError, updateImageSuccess } from './image-viewer.actions';
 
 @Injectable()
 export class ImageViewerEffects {
@@ -16,7 +16,7 @@ export class ImageViewerEffects {
       map(x => loadNewImageSuccess({ currentImage: x })),
       catchError((x: HttpErrorResponse) => {
         this.snackBar.open(`Error loading new image!`, 'Check pi').onAction().subscribe(() => {
-          this.router.navigateByUrl('image-viewer/pi-status');
+          this.router.navigateByUrl('image-viewer/queue-status');
         });
         return [loadNewImageError()]
       })
@@ -42,12 +42,12 @@ export class ImageViewerEffects {
     ))
   ));
 
-  getPiStatus$ = createEffect(() => this.actions$.pipe(
-    ofType(loadPiStatus),
-    mergeMap(() => this.webcamService.getPiStatus().pipe(
-      map(x => loadPiStatusSuccess({ piStatus: x })),
+  getQueueStatus$ = createEffect(() => this.actions$.pipe(
+    ofType(loadQueueStatus),
+    mergeMap(() => this.webcamService.getQueueStatus().pipe(
+      map(x => loadQueueStatusSuccess({ statusMessage: x })),
       catchError((x: HttpErrorResponse) => {
-        return [loadPiStatusError({ httpErrorResponse: x })]
+        return [loadQueueStatusError({ httpErrorResponse: x })]
       })
     ))
   ));

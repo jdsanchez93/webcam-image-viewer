@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store"
 import { GarageImage } from "../image.models";
-import { PiStatus } from "../pi-status/pi-status.models";
+import { QueueStatus } from "../queue-status/queue-status.models";
 import * as ImageViewerActions from './image-viewer.actions';
 
 export const imageViewerFeatureKey = 'imageViewer';
@@ -9,7 +9,7 @@ export interface ImageViewerState {
     loading: boolean,
     currentImage: GarageImage
     mostRecentImages: GarageImage[],
-    piStatus?: PiStatus
+    QueueStatus?: QueueStatus
 }
 
 export const initialState: ImageViewerState = {
@@ -45,13 +45,13 @@ export const imageViewerReducer = createReducer(
     on(ImageViewerActions.loadNewImageError, (state) => {
         return { ...state, loading: false }
     }),
-    on(ImageViewerActions.loadPiStatus, (state) => {
+    on(ImageViewerActions.loadQueueStatus, (state) => {
         return { ...state, loading: true }
     }),
-    on(ImageViewerActions.loadPiStatusSuccess, (state, { piStatus }) => {
-        return { ...state, loading: false, piStatus: { message: piStatus, iconName: 'thumb_up' } }
+    on(ImageViewerActions.loadQueueStatusSuccess, (state, { statusMessage }) => {
+        return { ...state, loading: false, QueueStatus: { message: statusMessage, iconName: 'thumb_up' } }
     }),
-    on(ImageViewerActions.loadPiStatusError, (state, { httpErrorResponse }) => {
-        return { ...state, loading: false, piStatus: { message: httpErrorResponse.error, iconName: 'error' } }
+    on(ImageViewerActions.loadQueueStatusError, (state, { httpErrorResponse }) => {
+        return { ...state, loading: false, QueueStatus: { message: httpErrorResponse.error, iconName: 'error' } }
     }),
 )

@@ -1,12 +1,12 @@
 <div class="new-image-container">
-    <button mat-raised-button (click)="checkPiStatus()">Check status of queue</button>
+    <button mat-raised-button (click)="checkQueueStatus()">Check status of queue</button>
     <div style="padding-top: 10px;">
         <ng-container *ngIf="this.isLoading$ | async as isLoading else elseBlock">
             <mat-spinner></mat-spinner>
         </ng-container>
 
         <ng-template #elseBlock>
-            <ng-container *ngIf="this.piStatus$ | async as s">
+            <ng-container *ngIf="this.QueueStatus$ | async as s">
                 <mat-card>
                     <div style="display: grid; grid-template-columns: 25px auto; gap: 10px; align-items: center;">
                         <mat-icon>{{s.iconName}}</mat-icon>
