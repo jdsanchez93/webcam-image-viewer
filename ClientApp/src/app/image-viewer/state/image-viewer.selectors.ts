@@ -17,3 +17,8 @@ export const selectHistory = createSelector(
   selectImageViewerFeature,
   state => state.mostRecentImages
 );
+
+export const selectQueueStatus = createSelector(
+  selectImageViewerFeature,
+  state => state.queueStatus
+);

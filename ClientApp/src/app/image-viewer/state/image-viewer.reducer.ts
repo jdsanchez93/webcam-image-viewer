@@ -1,5 +1,6 @@
 import { createReducer, on } from "@ngrx/store"
 import { GarageImage } from "../image.models";
+import { QueueStatus } from "../queue-status/queue-status.models";
 import * as ImageViewerActions from './image-viewer.actions';
 
 export const imageViewerFeatureKey = 'imageViewer';
@@ -7,7 +8,8 @@ export const imageViewerFeatureKey = 'imageViewer';
 export interface ImageViewerState {
     loading: boolean,
     currentImage: GarageImage
-    mostRecentImages: GarageImage[]
+    mostRecentImages: GarageImage[],
+    queueStatus?: QueueStatus
 }
 
 export const initialState: ImageViewerState = {
@@ -15,7 +17,7 @@ export const initialState: ImageViewerState = {
     currentImage: {
         garageImageId: 0
     },
-    mostRecentImages: []
+    mostRecentImages: [],
 }
 
 export const imageViewerReducer = createReducer(
@@ -39,5 +41,17 @@ export const imageViewerReducer = createReducer(
             return i;
         });
         return { ...state, mostRecentImages: updatedImages };
+    }),
+    on(ImageViewerActions.loadNewImageError, (state) => {
+        return { ...state, loading: false }
+    }),
+    on(ImageViewerActions.loadQueueStatus, (state) => {
+        return { ...state, loading: true }
+    }),
+    on(ImageViewerActions.loadQueueStatusSuccess, (state, { statusMessage }) => {
+        return { ...state, loading: false, queueStatus: { message: statusMessage, iconName: 'thumb_up' } }
+    }),
+    on(ImageViewerActions.loadQueueStatusError, (state, { httpErrorResponse }) => {
+        return { ...state, loading: false, queueStatus: { message: httpErrorResponse.error, iconName: 'error' } }
     }),
 )

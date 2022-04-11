@@ -16,13 +16,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditorFormComponent } from './editor-form/editor-form.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { QueueStatusComponent } from './queue-status/queue-status.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
     RequestNewImageComponent,
     HistoryComponent,
-    EditorFormComponent
+    EditorFormComponent,
+    QueueStatusComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +38,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatFormFieldModule,
     MatSelectModule,
     ReactiveFormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatIconModule,
+    MatCardModule
   ]
 })
 export class ImageViewerModule { }

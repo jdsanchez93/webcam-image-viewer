@@ -43,8 +43,14 @@ public class WebcamController : ControllerBase
             var s3key = imageId + ".png";
 
 
-            var b = await DoesPrefixExist(s3Client, bucketName, s3key);
-            Console.WriteLine($"DoesPrefixExist {b}");
+            var s3ObjectExists = await DoesPrefixExist(s3Client, bucketName, s3key);
+
+            Console.WriteLine($"DoesPrefixExist {s3ObjectExists}");
+
+            if (!s3ObjectExists)
+            {
+                return NotFound(s3key);
+            }
 
             var presignedUrl = GeneratePreSignedURL(bucketName, s3key, s3Client, 1);
 
@@ -135,7 +141,7 @@ public class WebcamController : ControllerBase
 
             } while (retry && (retries < MAX_RETRIES));
 
-            return retry;
+            return !retry;
 
         }
         catch (System.Exception e)
@@ -181,6 +187,34 @@ public class WebcamController : ControllerBase
         {
             _logger.LogError("Patch", e);
             return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    }
+
+    [HttpGet("QueueStatus")]
+    public async Task<IActionResult> GetQueueStatus()
+    {
+        try
+        {
+            var queueName = _configuration["Aws:QueueUrl"];
+            var sqsClient = new AmazonSQSClient();
+            ReceiveMessageRequest request = new ReceiveMessageRequest
+            {
+                WaitTimeSeconds = 0,
+                QueueUrl = queueName,
+            };
+            var x = await sqsClient.ReceiveMessageAsync(request);
+
+            _logger.LogInformation($"Messages in queue: {x.Messages.Count}");
+            if (x.Messages.Count() == 0)
+            {
+                return Ok("Queue is empty");
+            }
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, $"Messages in queue: {x.Messages.Count}");
+        }
+        catch (System.Exception e)
+        {
+            _logger.LogError("GetQueueStatus", e);
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
     }
 }

@@ -30,4 +30,8 @@ export class WebcamService {
     );
     return this.http.patch(`api/Webcam/${garageImageId}`, patchObj);
   }
+
+  public getQueueStatus(): Observable<string> {
+    return this.http.get('api/Webcam/QueueStatus', { responseType: "text" });
+  }
 }

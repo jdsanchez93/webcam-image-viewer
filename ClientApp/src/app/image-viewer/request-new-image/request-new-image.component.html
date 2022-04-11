@@ -1,13 +1,16 @@
 <div class="new-image-container">
     <button mat-raised-button (click)="requestNewImage()">New Image</button>
-
-    <ng-container *ngIf="this.isLoading$ | async as isLoading else elseBlock">
-        <mat-spinner></mat-spinner>
-    </ng-container>
-
-    <ng-template #elseBlock>
-        <ng-container *ngIf="this.currentImage$ | async as i">
-            <img [src]="i.presignedUrl">
+    <div style="padding-top: 10px;">
+        <ng-container *ngIf="this.isLoading$ | async as isLoading else elseBlock">
+            <mat-spinner></mat-spinner>
         </ng-container>
-    </ng-template>
+
+        <ng-template #elseBlock>
+            <ng-container *ngIf="this.currentImage$ | async as i">
+                <div>
+                    <img style="object-fit: cover; width: 100%;" [src]="i.presignedUrl">
+                </div>
+            </ng-container>
+        </ng-template>
+    </div>
 </div>
