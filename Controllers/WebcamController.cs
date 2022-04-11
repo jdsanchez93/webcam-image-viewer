@@ -6,6 +6,7 @@ using webcam_image_viewer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.JsonPatch;
+using System.Text.Json;
 
 namespace webcam_image_viewer.Controllers;
 
@@ -36,7 +37,12 @@ public class WebcamController : ControllerBase
             var sqsClient = new AmazonSQSClient();
 
             var imageId = Guid.NewGuid().ToString();
-            await SendMessage(sqsClient, queueName, imageId);
+            var queueMessage = new QueueMessage
+            {
+                ImageId = imageId
+            };
+            string jsonString = JsonSerializer.Serialize(queueMessage);
+            await SendMessage(sqsClient, queueName, jsonString);
 
             var s3Client = new AmazonS3Client();
 
