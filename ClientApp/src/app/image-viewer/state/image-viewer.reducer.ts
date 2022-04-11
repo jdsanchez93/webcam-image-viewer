@@ -9,7 +9,7 @@ export interface ImageViewerState {
     loading: boolean,
     currentImage: GarageImage
     mostRecentImages: GarageImage[],
-    QueueStatus?: QueueStatus
+    queueStatus?: QueueStatus
 }
 
 export const initialState: ImageViewerState = {
@@ -49,9 +49,9 @@ export const imageViewerReducer = createReducer(
         return { ...state, loading: true }
     }),
     on(ImageViewerActions.loadQueueStatusSuccess, (state, { statusMessage }) => {
-        return { ...state, loading: false, QueueStatus: { message: statusMessage, iconName: 'thumb_up' } }
+        return { ...state, loading: false, queueStatus: { message: statusMessage, iconName: 'thumb_up' } }
     }),
     on(ImageViewerActions.loadQueueStatusError, (state, { httpErrorResponse }) => {
-        return { ...state, loading: false, QueueStatus: { message: httpErrorResponse.error, iconName: 'error' } }
+        return { ...state, loading: false, queueStatus: { message: httpErrorResponse.error, iconName: 'error' } }
     }),
 )

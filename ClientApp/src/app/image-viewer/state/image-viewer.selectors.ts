@@ -20,5 +20,5 @@ export const selectHistory = createSelector(
 
 export const selectQueueStatus = createSelector(
   selectImageViewerFeature,
-  state => state.QueueStatus
+  state => state.queueStatus
 );
