@@ -18,7 +18,7 @@ export class ImageViewerEffects {
     mergeMap(([_, webcamSettings]) => this.webcamService.postNewImage(webcamSettings).pipe(
       map(x => loadNewImageSuccess({ currentImage: x })),
       catchError((x: HttpErrorResponse) => {
-        this.snackBar.open(`Error loading new image!`, 'Check status').onAction().subscribe(() => {
+        this.snackBar.open(`Error loading new image!`, 'Check status', { duration: 5000 }).onAction().subscribe(() => {
           this.router.navigateByUrl('image-viewer/status');
         });
         return [loadNewImageError()]
