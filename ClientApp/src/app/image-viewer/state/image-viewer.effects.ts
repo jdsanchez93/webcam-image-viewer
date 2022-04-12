@@ -2,16 +2,20 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, catchError } from 'rxjs/operators';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { map, mergeMap, catchError, tap } from 'rxjs/operators';
 import { WebcamService } from '../webcam.service';
 import { loadHistory, loadHistoryError, loadHistorySuccess, loadNewImage, loadNewImageError, loadNewImageSuccess, loadQueueStatus, loadQueueStatusError, loadQueueStatusSuccess, updateImage, updateImageError, updateImageSuccess } from './image-viewer.actions';
+import { selectWebcamSettings } from './image-viewer.selectors';
 
 @Injectable()
 export class ImageViewerEffects {
 
   getNewImage$ = createEffect(() => this.actions$.pipe(
     ofType(loadNewImage),
+    concatLatestFrom(action => this.store.select(selectWebcamSettings)),
+    tap(([action, webcamSettings]) => console.log('effects', webcamSettings)),
     mergeMap(() => this.webcamService.getNewImage().pipe(
       map(x => loadNewImageSuccess({ currentImage: x })),
       catchError((x: HttpErrorResponse) => {
@@ -56,6 +60,7 @@ export class ImageViewerEffects {
     private actions$: Actions,
     private webcamService: WebcamService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) { }
 }

@@ -1,6 +1,7 @@
 import { createReducer, on } from "@ngrx/store"
 import { GarageImage } from "../image.models";
 import { QueueStatus } from "../queue-status/queue-status.models";
+import { WebcamSettings } from "../webcam-settings/webcam-settings.model";
 import * as ImageViewerActions from './image-viewer.actions';
 
 export const imageViewerFeatureKey = 'imageViewer';
@@ -9,7 +10,8 @@ export interface ImageViewerState {
     loading: boolean,
     currentImage: GarageImage
     mostRecentImages: GarageImage[],
-    queueStatus?: QueueStatus
+    queueStatus?: QueueStatus,
+    webcamSettings?: WebcamSettings
 }
 
 export const initialState: ImageViewerState = {
@@ -54,4 +56,7 @@ export const imageViewerReducer = createReducer(
     on(ImageViewerActions.loadQueueStatusError, (state, { httpErrorResponse }) => {
         return { ...state, loading: false, queueStatus: { message: httpErrorResponse.error, iconName: 'error' } }
     }),
+    on(ImageViewerActions.updateWebcamSettings, (state, { webcamSettings }) => {
+        return { ...state, webcamSettings: webcamSettings }
+    })
 )
