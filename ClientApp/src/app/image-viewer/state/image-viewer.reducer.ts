@@ -20,6 +20,9 @@ export const initialState: ImageViewerState = {
         garageImageId: 0
     },
     mostRecentImages: [],
+    webcamSettings: {
+        brightness: 100
+    }
 }
 
 export const imageViewerReducer = createReducer(

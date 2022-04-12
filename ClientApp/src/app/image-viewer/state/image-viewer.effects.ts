@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { map, mergeMap, catchError, tap } from 'rxjs/operators';
+import { map, mergeMap, catchError } from 'rxjs/operators';
 import { WebcamService } from '../webcam.service';
 import { loadHistory, loadHistoryError, loadHistorySuccess, loadNewImage, loadNewImageError, loadNewImageSuccess, loadQueueStatus, loadQueueStatusError, loadQueueStatusSuccess, updateImage, updateImageError, updateImageSuccess } from './image-viewer.actions';
 import { selectWebcamSettings } from './image-viewer.selectors';
@@ -14,9 +14,8 @@ export class ImageViewerEffects {
 
   getNewImage$ = createEffect(() => this.actions$.pipe(
     ofType(loadNewImage),
-    concatLatestFrom(action => this.store.select(selectWebcamSettings)),
-    tap(([action, webcamSettings]) => console.log('effects', webcamSettings)),
-    mergeMap(() => this.webcamService.getNewImage().pipe(
+    concatLatestFrom(() => this.store.select(selectWebcamSettings)),
+    mergeMap(([_, webcamSettings]) => this.webcamService.postNewImage(webcamSettings).pipe(
       map(x => loadNewImageSuccess({ currentImage: x })),
       catchError((x: HttpErrorResponse) => {
         this.snackBar.open(`Error loading new image!`, 'Check status').onAction().subscribe(() => {

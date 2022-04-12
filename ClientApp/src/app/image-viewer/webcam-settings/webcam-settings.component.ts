@@ -1,10 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs';
 import { updateWebcamSettings } from '../state/image-viewer.actions';
+import { initialState } from '../state/image-viewer.reducer';
 import { selectWebcamSettings } from '../state/image-viewer.selectors';
-import { WebcamSettings } from './webcam-settings.model';
 
 @Component({
   selector: 'app-webcam-settings',
@@ -37,7 +37,8 @@ export class WebcamSettingsComponent implements OnInit {
   }
 
   reset() {
-    this.settingsForm.reset();
+    // TODO
+    this.settingsForm.reset(initialState.webcamSettings);
     this.save();
   }
 
