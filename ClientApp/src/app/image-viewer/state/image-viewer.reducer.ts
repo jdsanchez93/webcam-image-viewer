@@ -21,7 +21,8 @@ export const initialState: ImageViewerState = {
     },
     mostRecentImages: [],
     webcamSettings: {
-        brightness: 100
+        brightness: 100,
+        contrast: 32
     }
 }
 

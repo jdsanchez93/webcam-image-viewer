@@ -3,14 +3,17 @@
         <mat-panel-title>Advanced settings</mat-panel-title>
     </mat-expansion-panel-header>
     <form [formGroup]="settingsForm">
-        <div style="display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 15px">
+        <div class="slider-form">
             <span>Brightness</span>
             <mat-slider thumbLabel min="0" max="255" tickInterval="auto" formControlName="brightness"></mat-slider>
+        </div>
+        <div class="slider-form">
+            <span>Contrast</span>
+            <mat-slider thumbLabel min="0" max="255" tickInterval="auto" formControlName="contrast"></mat-slider>
         </div>
     </form>
 
     <mat-action-row>
         <button mat-button color="warn" (click)="reset()">Reset</button>
-        <button mat-button color="warn" (click)="save()">Save</button>
     </mat-action-row>
 </mat-expansion-panel>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { map, take } from 'rxjs';
+import { map, take, tap } from 'rxjs';
 import { updateWebcamSettings } from '../state/image-viewer.actions';
 import { initialState } from '../state/image-viewer.reducer';
 import { selectWebcamSettings } from '../state/image-viewer.selectors';
@@ -13,7 +13,8 @@ import { selectWebcamSettings } from '../state/image-viewer.selectors';
 })
 export class WebcamSettingsComponent implements OnInit {
   settingsForm: FormGroup = this.fb.group({
-    brightness: new FormControl()
+    brightness: new FormControl(),
+    contrast: new FormControl()
   });
 
   constructor(private fb: FormBuilder, private store: Store) { }
@@ -29,6 +30,13 @@ export class WebcamSettingsComponent implements OnInit {
         })
       )
       .subscribe()
+
+    // TODO remove log
+    this.settingsForm.valueChanges
+      .pipe(
+        tap(() => this.save())
+      )
+      .subscribe(x => console.log('valuechange', x))
   }
 
   save() {
