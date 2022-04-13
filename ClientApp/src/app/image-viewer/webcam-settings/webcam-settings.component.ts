@@ -31,12 +31,11 @@ export class WebcamSettingsComponent implements OnInit {
       )
       .subscribe()
 
-    // TODO remove log
     this.settingsForm.valueChanges
       .pipe(
         tap(() => this.save())
       )
-      .subscribe(x => console.log('valuechange', x))
+      .subscribe()
   }
 
   save() {
@@ -45,9 +44,7 @@ export class WebcamSettingsComponent implements OnInit {
   }
 
   reset() {
-    // TODO
-    this.settingsForm.reset(initialState.webcamSettings);
-    this.save();
+    this.settingsForm.reset(initialState.webcamSettings, {emitEvent: true});
   }
 
 }
