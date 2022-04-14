@@ -19,13 +19,16 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { QueueStatusComponent } from './queue-status/queue-status.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { WebcamSettingsComponent } from './webcam-settings/webcam-settings.component';
+import { MatSliderModule } from '@angular/material/slider';
 
 @NgModule({
   declarations: [
     RequestNewImageComponent,
     HistoryComponent,
     EditorFormComponent,
-    QueueStatusComponent
+    QueueStatusComponent,
+    WebcamSettingsComponent
   ],
   imports: [
     CommonModule,
@@ -40,7 +43,8 @@ import { MatCardModule } from '@angular/material/card';
     ReactiveFormsModule,
     MatSnackBarModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    MatSliderModule
   ]
 })
 export class ImageViewerModule { }

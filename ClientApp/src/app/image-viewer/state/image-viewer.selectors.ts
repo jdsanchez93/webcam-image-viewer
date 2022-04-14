@@ -22,3 +22,8 @@ export const selectQueueStatus = createSelector(
   selectImageViewerFeature,
   state => state.queueStatus
 );
+
+export const selectWebcamSettings = createSelector(
+  selectImageViewerFeature,
+  state => state.webcamSettings
+);

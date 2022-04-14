@@ -27,8 +27,8 @@ public class WebcamController : ControllerBase
         _context = context;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Get()
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] WebcamSettings webcamSettings)
     {
         try
         {
@@ -39,7 +39,8 @@ public class WebcamController : ControllerBase
             var imageId = Guid.NewGuid().ToString();
             var queueMessage = new QueueMessage
             {
-                ImageId = imageId
+                ImageId = imageId,
+                WebcamSettings = webcamSettings
             };
             string jsonString = JsonSerializer.Serialize(queueMessage);
             await SendMessage(sqsClient, queueName, jsonString);
