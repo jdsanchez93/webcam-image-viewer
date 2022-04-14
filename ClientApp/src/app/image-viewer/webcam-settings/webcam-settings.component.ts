@@ -23,28 +23,19 @@ export class WebcamSettingsComponent implements OnInit {
     this.store.select(selectWebcamSettings)
       .pipe(
         take(1),
-        map(x => {
-          if (x !== undefined) {
-            this.settingsForm.setValue(x);
-          }
-        })
+        tap(x => this.settingsForm.setValue(x))
       )
-      .subscribe()
+      .subscribe();
 
     this.settingsForm.valueChanges
       .pipe(
-        tap(() => this.save())
+        tap(x => this.store.dispatch(updateWebcamSettings({ webcamSettings: x })))
       )
-      .subscribe()
-  }
-
-  save() {
-    let ret = Object.fromEntries(Object.entries(this.settingsForm.value).filter(([_, v]) => v != null));
-    this.store.dispatch(updateWebcamSettings({ webcamSettings: ret }))
+      .subscribe();
   }
 
   reset() {
-    this.settingsForm.reset(initialState.webcamSettings, {emitEvent: true});
+    this.settingsForm.reset(initialState.webcamSettings, { emitEvent: true });
   }
 
 }

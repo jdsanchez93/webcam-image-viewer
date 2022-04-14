@@ -11,7 +11,7 @@ export class WebcamService {
 
   constructor(private http: HttpClient) { }
 
-  public postNewImage(webcamSettings: WebcamSettings | undefined): Observable<GarageImage> {
+  public postNewImage(webcamSettings: WebcamSettings): Observable<GarageImage> {
     return this.http.post<GarageImage>(`api/Webcam`, webcamSettings);
   }
 

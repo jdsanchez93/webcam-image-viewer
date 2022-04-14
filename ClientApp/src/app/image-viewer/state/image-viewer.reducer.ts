@@ -11,7 +11,7 @@ export interface ImageViewerState {
     currentImage: GarageImage
     mostRecentImages: GarageImage[],
     queueStatus?: QueueStatus,
-    webcamSettings?: WebcamSettings
+    webcamSettings: WebcamSettings
 }
 
 export const initialState: ImageViewerState = {
