@@ -43,4 +43,12 @@ describe('WebcamService', () => {
     );
     req.flush(null);
   });
+
+  it('should patch an object with no keys', () => {
+    service.patchGarageImage(2, {}).subscribe();
+    const req = httpTestingController.expectOne('api/Webcam/2');
+    expect(req.request.method).toEqual('PATCH');
+    expect(req.request.body).toEqual([]);
+    req.flush(null);
+  });
 });
