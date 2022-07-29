@@ -28,7 +28,7 @@ public class WebcamController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] WebcamSettings webcamSettings)
+    public async Task<IActionResult> Post([FromBody] QueueMessage queueMessage)
     {
         try
         {
@@ -37,11 +37,8 @@ public class WebcamController : ControllerBase
             var sqsClient = new AmazonSQSClient();
 
             var imageId = Guid.NewGuid().ToString();
-            var queueMessage = new QueueMessage
-            {
-                ImageId = imageId,
-                WebcamSettings = webcamSettings
-            };
+            queueMessage.ImageId = imageId;
+            
             string jsonString = JsonSerializer.Serialize(queueMessage);
             await SendMessage(sqsClient, queueName, jsonString);
 
