@@ -1,7 +1,7 @@
 import { createReducer, on } from "@ngrx/store"
 import { GarageImage } from "../image.models";
 import { QueueStatus } from "../queue-status/queue-status.models";
-import { WebcamSettings } from "../webcam-settings/webcam-settings.model";
+import { SmartLightSettings, WebcamSettings } from "../webcam-settings/webcam-settings.model";
 import * as ImageViewerActions from './image-viewer.actions';
 
 export const imageViewerFeatureKey = 'imageViewer';
@@ -12,6 +12,7 @@ export interface ImageViewerState {
     mostRecentImages: GarageImage[],
     queueStatus?: QueueStatus,
     webcamSettings: WebcamSettings
+    lightSettings?: SmartLightSettings
 }
 
 export const initialState: ImageViewerState = {
@@ -62,5 +63,8 @@ export const imageViewerReducer = createReducer(
     }),
     on(ImageViewerActions.updateWebcamSettings, (state, { webcamSettings }) => {
         return { ...state, webcamSettings: webcamSettings }
-    })
+    }),
+    on(ImageViewerActions.updateLightSettings, (state, { lightSettings }) => {
+        return { ...state, lightSettings: lightSettings }
+    }),
 )

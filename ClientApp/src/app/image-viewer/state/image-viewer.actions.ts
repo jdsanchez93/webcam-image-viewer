@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { createAction, props } from '@ngrx/store';
 import { GarageImage } from '../image.models';
-import { WebcamSettings } from '../webcam-settings/webcam-settings.model';
+import { SmartLightSettings, WebcamSettings } from '../webcam-settings/webcam-settings.model';
 
 export const loadNewImage = createAction('[Image Viewer Api] Load New Image');
 export const loadNewImageSuccess = createAction('[Image Viewer Api] Load New Image Success', props<{ currentImage: GarageImage }>());
@@ -20,3 +20,5 @@ export const loadQueueStatusSuccess = createAction('[Image Api] Load Pi Status S
 export const loadQueueStatusError = createAction('[Image Api] Load Pi Status Error', props<{ httpErrorResponse: HttpErrorResponse }>());
 
 export const updateWebcamSettings = createAction('[Image Viewer] Update Webcam Settings', props<{webcamSettings: WebcamSettings}>());
+
+export const updateLightSettings = createAction('[Image Viewer] Update Light Settings', props<{lightSettings: SmartLightSettings}>());

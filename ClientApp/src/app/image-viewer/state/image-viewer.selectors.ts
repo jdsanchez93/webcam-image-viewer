@@ -27,3 +27,8 @@ export const selectWebcamSettings = createSelector(
   selectImageViewerFeature,
   state => state.webcamSettings
 );
+
+export const selectLightSettings = createSelector(
+  selectImageViewerFeature,
+  state => state.lightSettings
+);
