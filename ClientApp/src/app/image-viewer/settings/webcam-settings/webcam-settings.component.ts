@@ -18,10 +18,6 @@ export class WebcamSettingsComponent implements OnInit {
     contrast: new FormControl()
   });
 
-  lightSettingsForm: FormGroup = this.fb.group({
-    isOn: new FormControl()
-  });
-
   @ViewChild(LightSettingsComponent) lightSettingsComponent!: LightSettingsComponent;
 
   constructor(private fb: FormBuilder, private store: Store) { }
@@ -37,12 +33,6 @@ export class WebcamSettingsComponent implements OnInit {
     this.webcamSettingsForm.valueChanges
       .pipe(
         tap(x => this.store.dispatch(updateWebcamSettings({ webcamSettings: x })))
-      )
-      .subscribe();
-
-    this.lightSettingsForm.valueChanges
-      .pipe(
-        tap(x => this.store.dispatch(updateLightSettings({ lightSettings: x })))
       )
       .subscribe();
   }
