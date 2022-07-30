@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { createAction, props } from '@ngrx/store';
 import { GarageImage } from '../image.models';
-import { SmartLightSettings, WebcamSettings } from '../webcam-settings/webcam-settings.model';
+import { SmartLightSettings, WebcamSettings } from '../settings/settings.models';
 
 export const loadNewImage = createAction('[Image Viewer Api] Load New Image');
 export const loadNewImageSuccess = createAction('[Image Viewer Api] Load New Image Success', props<{ currentImage: GarageImage }>());

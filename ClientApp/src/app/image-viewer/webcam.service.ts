@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GarageImage } from './image.models';
-import { QueueMessage } from './webcam-settings/webcam-settings.model';
+import { QueueMessage } from './settings/settings.models';
 
 @Injectable({
   providedIn: 'root'

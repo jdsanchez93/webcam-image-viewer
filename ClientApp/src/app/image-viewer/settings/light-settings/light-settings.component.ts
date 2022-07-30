@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs';
-import { updateLightSettings } from '../state/image-viewer.actions';
-import { initialState } from '../state/image-viewer.reducer';
+import { updateLightSettings } from '../../state/image-viewer.actions';
+import { initialState } from '../../state/image-viewer.reducer';
 
 @Component({
   selector: 'app-light-settings',

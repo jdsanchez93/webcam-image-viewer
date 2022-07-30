@@ -3,9 +3,9 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { map, take, tap } from 'rxjs';
 import { LightSettingsComponent } from '../light-settings/light-settings.component';
-import { updateLightSettings, updateWebcamSettings } from '../state/image-viewer.actions';
-import { initialState } from '../state/image-viewer.reducer';
-import { selectLightSettings, selectWebcamSettings } from '../state/image-viewer.selectors';
+import { updateLightSettings, updateWebcamSettings } from '../../state/image-viewer.actions';
+import { initialState } from '../../state/image-viewer.reducer';
+import { selectLightSettings, selectWebcamSettings } from '../../state/image-viewer.selectors';
 
 @Component({
   selector: 'app-webcam-settings',

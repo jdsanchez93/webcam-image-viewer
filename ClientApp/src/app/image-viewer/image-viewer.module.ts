@@ -19,9 +19,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { QueueStatusComponent } from './queue-status/queue-status.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { WebcamSettingsComponent } from './webcam-settings/webcam-settings.component';
+import { WebcamSettingsComponent } from './settings/webcam-settings/webcam-settings.component';
 import { MatSliderModule } from '@angular/material/slider';
-import { LightSettingsComponent } from './light-settings/light-settings.component';
+import { LightSettingsComponent } from './settings/light-settings/light-settings.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
