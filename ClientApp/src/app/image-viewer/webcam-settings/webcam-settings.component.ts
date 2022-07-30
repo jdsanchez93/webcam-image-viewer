@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { map, take, tap } from 'rxjs';
-import { updateWebcamSettings } from '../state/image-viewer.actions';
+import { LightSettingsComponent } from '../light-settings/light-settings.component';
+import { updateLightSettings, updateWebcamSettings } from '../state/image-viewer.actions';
 import { initialState } from '../state/image-viewer.reducer';
-import { selectWebcamSettings } from '../state/image-viewer.selectors';
+import { selectLightSettings, selectWebcamSettings } from '../state/image-viewer.selectors';
 
 @Component({
   selector: 'app-webcam-settings',
@@ -12,10 +13,16 @@ import { selectWebcamSettings } from '../state/image-viewer.selectors';
   styleUrls: ['./webcam-settings.component.scss']
 })
 export class WebcamSettingsComponent implements OnInit {
-  settingsForm: FormGroup = this.fb.group({
+  webcamSettingsForm: FormGroup = this.fb.group({
     brightness: new FormControl(),
     contrast: new FormControl()
   });
+
+  lightSettingsForm: FormGroup = this.fb.group({
+    isOn: new FormControl()
+  });
+
+  @ViewChild(LightSettingsComponent) lightSettingsComponent!: LightSettingsComponent;
 
   constructor(private fb: FormBuilder, private store: Store) { }
 
@@ -23,19 +30,26 @@ export class WebcamSettingsComponent implements OnInit {
     this.store.select(selectWebcamSettings)
       .pipe(
         take(1),
-        tap(x => this.settingsForm.setValue(x))
+        tap(x => this.webcamSettingsForm.setValue(x))
       )
       .subscribe();
 
-    this.settingsForm.valueChanges
+    this.webcamSettingsForm.valueChanges
       .pipe(
         tap(x => this.store.dispatch(updateWebcamSettings({ webcamSettings: x })))
+      )
+      .subscribe();
+
+    this.lightSettingsForm.valueChanges
+      .pipe(
+        tap(x => this.store.dispatch(updateLightSettings({ lightSettings: x })))
       )
       .subscribe();
   }
 
   reset() {
-    this.settingsForm.reset(initialState.webcamSettings, { emitEvent: true });
+    this.webcamSettingsForm.reset(initialState.webcamSettings, { emitEvent: true });
+    this.lightSettingsComponent.reset();
   }
 
 }

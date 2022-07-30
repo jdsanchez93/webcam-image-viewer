@@ -2,7 +2,7 @@
     <mat-expansion-panel-header>
         <mat-panel-title>Advanced settings</mat-panel-title>
     </mat-expansion-panel-header>
-    <form [formGroup]="settingsForm">
+    <form [formGroup]="webcamSettingsForm" class="form-grid">
         <div class="slider-form">
             <span>Brightness</span>
             <mat-slider thumbLabel min="0" max="255" tickInterval="auto" formControlName="brightness"></mat-slider>
@@ -11,6 +11,8 @@
             <span>Contrast</span>
             <mat-slider thumbLabel min="0" max="255" tickInterval="auto" formControlName="contrast"></mat-slider>
         </div>
+
+        <app-light-settings></app-light-settings>
     </form>
 
     <mat-action-row>

@@ -21,4 +21,4 @@ export const loadQueueStatusError = createAction('[Image Api] Load Pi Status Err
 
 export const updateWebcamSettings = createAction('[Image Viewer] Update Webcam Settings', props<{webcamSettings: WebcamSettings}>());
 
-export const updateLightSettings = createAction('[Image Viewer] Update Light Settings', props<{lightSettings: SmartLightSettings}>());
+export const updateLightSettings = createAction('[Image Viewer] Update Light Settings', props<{lightSettings?: SmartLightSettings}>());

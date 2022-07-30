@@ -21,6 +21,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { WebcamSettingsComponent } from './webcam-settings/webcam-settings.component';
 import { MatSliderModule } from '@angular/material/slider';
+import { LightSettingsComponent } from './light-settings/light-settings.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { MatSliderModule } from '@angular/material/slider';
     HistoryComponent,
     EditorFormComponent,
     QueueStatusComponent,
-    WebcamSettingsComponent
+    WebcamSettingsComponent,
+    LightSettingsComponent,
   ],
   imports: [
     CommonModule,
@@ -44,7 +47,8 @@ import { MatSliderModule } from '@angular/material/slider';
     MatSnackBarModule,
     MatIconModule,
     MatCardModule,
-    MatSliderModule
+    MatSliderModule,
+    MatSlideToggleModule
   ]
 })
 export class ImageViewerModule { }
