@@ -23,6 +23,7 @@ import { WebcamSettingsComponent } from './settings/webcam-settings/webcam-setti
 import { MatSliderModule } from '@angular/material/slider';
 import { LightSettingsComponent } from './settings/light-settings/light-settings.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { AdvancedSettingsComponent } from './settings/advanced-settings/advanced-settings.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     QueueStatusComponent,
     WebcamSettingsComponent,
     LightSettingsComponent,
+    AdvancedSettingsComponent,
   ],
   imports: [
     CommonModule,

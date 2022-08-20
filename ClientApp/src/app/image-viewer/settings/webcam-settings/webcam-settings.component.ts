@@ -1,24 +1,21 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { map, take, tap } from 'rxjs';
-import { LightSettingsComponent } from '../light-settings/light-settings.component';
-import { updateLightSettings, updateWebcamSettings } from '../../state/image-viewer.actions';
+import { take, tap } from 'rxjs';
+import { updateWebcamSettings } from '../../state/image-viewer.actions';
 import { initialState } from '../../state/image-viewer.reducer';
-import { selectLightSettings, selectWebcamSettings } from '../../state/image-viewer.selectors';
+import { selectWebcamSettings } from '../../state/image-viewer.selectors';
 
 @Component({
   selector: 'app-webcam-settings',
   templateUrl: './webcam-settings.component.html',
-  styleUrls: ['./webcam-settings.component.scss']
+  styleUrls: ['./webcam-settings.component.scss', '../settings.scss']
 })
 export class WebcamSettingsComponent implements OnInit {
   webcamSettingsForm: FormGroup = this.fb.group({
     brightness: new FormControl(),
     contrast: new FormControl()
   });
-
-  @ViewChild(LightSettingsComponent) lightSettingsComponent!: LightSettingsComponent;
 
   constructor(private fb: FormBuilder, private store: Store) { }
 
@@ -39,7 +36,6 @@ export class WebcamSettingsComponent implements OnInit {
 
   reset() {
     this.webcamSettingsForm.reset(initialState.webcamSettings, { emitEvent: true });
-    this.lightSettingsComponent.reset();
   }
 
 }

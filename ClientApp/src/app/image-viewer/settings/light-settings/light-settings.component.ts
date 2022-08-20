@@ -8,7 +8,7 @@ import { initialState } from '../../state/image-viewer.reducer';
 @Component({
   selector: 'app-light-settings',
   templateUrl: './light-settings.component.html',
-  styleUrls: ['./light-settings.component.scss']
+  styleUrls: ['./light-settings.component.scss', '../settings.scss']
 })
 export class LightSettingsComponent implements OnInit {
 
