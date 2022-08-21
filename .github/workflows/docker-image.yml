@@ -28,7 +28,7 @@ jobs:
     - name: Version
       if: ${{ github.event_name == 'push' }}
       id: version
-      uses: paulhatch/semantic-version@v4.0.2
+      uses: paulhatch/semantic-version@v4.0.3
       with:
         format: "${major}.${minor}.${patch}"
 
