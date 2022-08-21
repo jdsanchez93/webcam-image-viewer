@@ -23,7 +23,7 @@ jobs:
       id: version-pr
       uses: paulhatch/semantic-version@v4.0.2
       with:
-        format: "${major}.${minor}.${patch}-${{ github.ref_name }}"
+        format: "${major}.${minor}.${patch}-${{ github.event.pull_request.head.ref }}"
 
     - name: Version push
       if: ${{ github.event_name == 'push' }}
