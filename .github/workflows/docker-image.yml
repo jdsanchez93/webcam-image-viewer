@@ -35,7 +35,10 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-
+        
     - name: Build and push docker image
       shell: bash
-      run: ./build-scripts/docker.sh ${{ steps.version-pr.outputs.version }} ${{ steps.version-pr.outputs.version_tag }}
+      run: ./build-scripts/docker.sh $VERSION $VERSION_TAG
+      env:
+        VERSION: "${{ github.event_name == 'pull_request' && steps.version-pr.outputs.version || steps.version.outputs.version }}"
+        VERSION_TAG: "${{ github.event_name == 'pull_request' && steps.version-pr.outputs.version_tag || steps.version.outputs.version_tag }}"
