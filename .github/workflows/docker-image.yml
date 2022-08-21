@@ -20,7 +20,7 @@ jobs:
 
     - name: Version pr
       if: ${{ github.event_name == 'pull_request' }}
-      id: version
+      id: version-pr
       uses: paulhatch/semantic-version@v4.0.2
       with:
         format: "${major}.${minor}.${patch}-${{ github.ref_name }}"
