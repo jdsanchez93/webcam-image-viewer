@@ -40,4 +40,4 @@ jobs:
 
     - name: Build and push docker image
       shell: bash
-      run: ./build-scripts/docker.sh
+      run: ./build-scripts/docker.sh ${{ steps.version-pr.outputs.version }}

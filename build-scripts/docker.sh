@@ -1,5 +1,5 @@
 #!/bin/bash
-IMAGE_TAG=$(date +%s)
+IMAGE_TAG=$1
 IMAGE_PREFIX="jdeeezy/webcam-image-viewer:"
 IMAGE_NAME="$IMAGE_PREFIX$IMAGE_TAG"
 
