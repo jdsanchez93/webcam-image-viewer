@@ -40,5 +40,5 @@ jobs:
       shell: bash
       run: ./build-scripts/docker.sh $VERSION $VERSION_TAG
       env:
-        VERSION: "${{ github.event_name == 'pull_request' && steps.version-pr.outputs.version || steps.version.outputs.version }}"
-        VERSION_TAG: "${{ github.event_name == 'pull_request' && steps.version-pr.outputs.version_tag || steps.version.outputs.version_tag }}"
+        VERSION: "${{ github.event_name == 'push' && steps.version.outputs.version || steps.version-pr.outputs.version }}"
+        VERSION_TAG: "${{ github.event_name == 'push' && steps.version.outputs.version_tag || '' }}"
