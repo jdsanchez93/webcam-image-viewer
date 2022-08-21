@@ -6,4 +6,5 @@ IMAGE_NAME="$IMAGE_PREFIX$IMAGE_TAG"
 # docker build . --file Dockerfile --tag $IMAGE_NAME
 # docker push $IMAGE_NAME
 
-git push origin $2
+git tag <tagname> $2
+git push origin --tags
