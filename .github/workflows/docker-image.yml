@@ -66,3 +66,5 @@ jobs:
         service: webcam-image-viewer
         cluster: ProjectsCluster
         wait-for-service-stability: true
+        wait-for-minutes: 5
+        force-new-deployment: true
