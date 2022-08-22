@@ -19,6 +19,14 @@
                 {
                     "name": "MYSQLCONNSTR_Mysql",
                     "valueFrom": "webcam-image-viewer-env-mysql-connection-string"
+                },
+                {
+                    "valueFrom": "webcam-image-viewer-env-Aws-QueueUrl",
+                    "name": "Aws__QueueUrl"
+                },
+                {
+                    "valueFrom": "webcam-image-viewer-env-Aws-BucketName",
+                    "name": "Aws__BucketName"
                 }
             ]
         }
