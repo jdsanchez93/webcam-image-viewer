@@ -24,6 +24,7 @@ jobs:
       uses: paulhatch/semantic-version@v4.0.2
       with:
         namespace: ${{ github.event.pull_request.head.ref }}
+        format: "${major}.${minor}.${patch}-prerelease${increment}"
 
     - name: Version
       if: ${{ github.event_name == 'push' }}
@@ -35,10 +36,39 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-        
+
     - name: Build and push docker image
+      id: build-image
       shell: bash
       run: ./build-scripts/docker.sh $VERSION $VERSION_TAG
       env:
         VERSION: "${{ github.event_name == 'push' && steps.version.outputs.version || steps.version-pr.outputs.version }}"
         VERSION_TAG: "${{ github.event_name == 'push' && steps.version.outputs.version_tag || '' }}"
+
+    - name: Configure AWS credentials
+      if: ${{ github.event_name == 'push' }}
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-2
+
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      if: ${{ github.event_name == 'push' }}
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ github.workspace }}/.github/workflows/task-definition.json
+        container-name: webcam-image-viewer
+        image: ${{ steps.build-image.outputs.image }}
+
+    - name: Deploy Amazon ECS task definition
+      if: ${{ github.event_name == 'push' }}
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: webcam-image-viewer
+        cluster: ProjectsCluster
+        wait-for-service-stability: true
+        wait-for-minutes: 10
+        force-new-deployment: true
