@@ -1,0 +1,13 @@
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>Advanced settings</mat-panel-title>
+    </mat-expansion-panel-header>
+    <div>
+        <app-webcam-settings></app-webcam-settings>
+        <app-light-settings></app-light-settings>
+    </div>
+
+    <mat-action-row>
+        <button mat-button color="warn" (click)="reset()">Reset</button>
+    </mat-action-row>
+</mat-expansion-panel>

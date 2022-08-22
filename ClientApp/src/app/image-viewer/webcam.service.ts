@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GarageImage } from './image.models';
-import { WebcamSettings } from './webcam-settings/webcam-settings.model';
+import { QueueMessage } from './settings/settings.models';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +11,8 @@ export class WebcamService {
 
   constructor(private http: HttpClient) { }
 
-  public postNewImage(webcamSettings: WebcamSettings): Observable<GarageImage> {
-    return this.http.post<GarageImage>(`api/Webcam`, webcamSettings);
+  public postNewImage(queueMessage: QueueMessage): Observable<GarageImage> {
+    return this.http.post<GarageImage>(`api/Webcam`, queueMessage);
   }
 
   public getHistory(): Observable<GarageImage[]> {
