@@ -75,7 +75,7 @@ public class WebcamController : ControllerBase
         catch (System.Exception e)
         {
 
-            _logger.LogError("Get", e);
+            _logger.LogError(e, "Get");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -173,7 +173,7 @@ public class WebcamController : ControllerBase
         catch (System.Exception e)
         {
 
-            _logger.LogError("GetHistory", e);
+            _logger.LogError(e, "GetHistory");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -192,7 +192,7 @@ public class WebcamController : ControllerBase
         }
         catch (System.Exception e)
         {
-            _logger.LogError("Patch", e);
+            _logger.LogError(e, "Patch");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -220,7 +220,7 @@ public class WebcamController : ControllerBase
         }
         catch (System.Exception e)
         {
-            _logger.LogError("GetQueueStatus", e);
+            _logger.LogError(e, "GetQueueStatus");
             return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
     }
