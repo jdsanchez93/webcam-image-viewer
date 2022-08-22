@@ -24,6 +24,7 @@ jobs:
       uses: paulhatch/semantic-version@v4.0.2
       with:
         namespace: ${{ github.event.pull_request.head.ref }}
+        format: "${major}.${minor}.${patch}-prerelease${increment}"
 
     - name: Version
       if: ${{ github.event_name == 'push' }}
