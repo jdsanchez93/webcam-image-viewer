@@ -55,7 +55,7 @@ jobs:
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: $GITHUB_WORKSPACE/.github/workflows/task-definition.json
+        task-definition: ${{ github.workspace }}/.github/workflows/task-definition.json
         container-name: webcam-image-viewer
         image: ${{ steps.build-image.outputs.image }}
 
