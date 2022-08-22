@@ -10,3 +10,5 @@ if [ ! -z "$2" ]; then
     git tag $2
     git push origin --tags
 fi
+
+echo "::set-output name=image::$IMAGE_NAME"
