@@ -26,25 +26,8 @@
     "family": "webcam-image-viewer-deploy",
     "taskRoleArn": "ecsTaskExecutionRole",
     "executionRoleArn": "ecsTaskExecutionRole",
-    "revision": 4,
     "volumes": [],
-    "status": "ACTIVE",
-    "requiresAttributes": [
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.task-iam-role"
-        },
-        {
-            "name": "ecs.capability.secrets.ssm.environment-variables"
-        }
-    ],
     "placementConstraints": [],
-    "compatibilities": [
-        "EXTERNAL",
-        "EC2"
-    ],
     "requiresCompatibilities": [
         "EC2"
     ]
