@@ -8,7 +8,7 @@
             (opened)="setStep(i)">
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    {{x.imageDate + 'Z' | date: 'MMM d, y, hh:mm:ss a' }}
+                    {{x.imageDate + 'Z' | date: 'MMM dd, y, hh:mm:ss a' }}
                 </mat-panel-title>
                 <mat-panel-description>
                     {{ x.numberOfCars === null ? 'No data' : x.numberOfCars + ' car(s)' }}
