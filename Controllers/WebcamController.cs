@@ -17,14 +17,18 @@ public class WebcamController : ControllerBase
     private readonly ILogger<WebcamController> _logger;
     private readonly IConfiguration _configuration;
     private readonly WebcamDbContext _context;
+    private readonly IAmazonSQS _sqsClient;
+    private readonly IAmazonS3 _s3Client;
 
     public const int MAX_RETRIES = 5;
 
-    public WebcamController(ILogger<WebcamController> logger, IConfiguration configuration, WebcamDbContext context)
+    public WebcamController(ILogger<WebcamController> logger, IConfiguration configuration, WebcamDbContext context, IAmazonSQS sqsClient, IAmazonS3 s3Client)
     {
         _logger = logger;
         _configuration = configuration;
         _context = context;
+        _sqsClient = sqsClient;
+        _s3Client = s3Client;
     }
 
     [HttpPost]
@@ -34,20 +38,17 @@ public class WebcamController : ControllerBase
         {
             var queueName = _configuration["Aws:QueueUrl"];
             var bucketName = _configuration["Aws:BucketName"];
-            var sqsClient = new AmazonSQSClient();
 
             var imageId = Guid.NewGuid().ToString();
             queueMessage.ImageId = imageId;
             
             string jsonString = JsonSerializer.Serialize(queueMessage);
-            await SendMessage(sqsClient, queueName, jsonString);
-
-            var s3Client = new AmazonS3Client();
+            await SendMessage(_sqsClient, queueName, jsonString);
 
             var s3key = imageId + ".png";
 
 
-            var s3ObjectExists = await DoesPrefixExist(s3Client, bucketName, s3key);
+            var s3ObjectExists = await DoesPrefixExist(bucketName, s3key);
 
             Console.WriteLine($"DoesPrefixExist {s3ObjectExists}");
 
@@ -56,7 +57,7 @@ public class WebcamController : ControllerBase
                 return NotFound(s3key);
             }
 
-            var presignedUrl = GeneratePreSignedURL(bucketName, s3key, s3Client, 1);
+            var presignedUrl = GeneratePreSignedURL(bucketName, s3key, 1);
 
             var garageImage = new GarageImage()
             {
@@ -85,7 +86,7 @@ public class WebcamController : ControllerBase
         SendMessageResponse responseSendMsg = await sqsClient.SendMessageAsync(qUrl, messageBody);
     }
 
-    private static string GeneratePreSignedURL(string bucketName, string? objectKey, AmazonS3Client s3Client, double duration)
+    private string GeneratePreSignedURL(string bucketName, string? objectKey, double duration)
     {
         string urlString = "";
         try
@@ -96,7 +97,7 @@ public class WebcamController : ControllerBase
                 Key = objectKey,
                 Expires = DateTime.UtcNow.AddHours(duration)
             };
-            urlString = s3Client.GetPreSignedURL(request1);
+            urlString = _s3Client.GetPreSignedURL(request1);
         }
         catch (AmazonS3Exception e)
         {
@@ -109,7 +110,7 @@ public class WebcamController : ControllerBase
         return urlString;
     }
 
-    private async Task<Boolean> DoesPrefixExist(AmazonS3Client s3Client, string bucketName, string prefix)
+    private async Task<Boolean> DoesPrefixExist(string bucketName, string prefix)
     {
         try
         {
@@ -128,7 +129,7 @@ public class WebcamController : ControllerBase
                 Console.WriteLine($"delay {delay}");
                 await Task.Delay(((int)delay));
 
-                ListObjectsV2Response response = await s3Client.ListObjectsV2Async(request);
+                ListObjectsV2Response response = await _s3Client.ListObjectsV2Async(request);
                 Console.WriteLine($"ListObjectsV2Async {response.HttpStatusCode}");
                 Console.WriteLine($"Objects.count {response.S3Objects.Count()}");
                 foreach (var item in response.S3Objects)
@@ -163,8 +164,7 @@ public class WebcamController : ControllerBase
             var history = await _context.GarageImages.OrderByDescending(x => x.ImageDate).Take(10).ToListAsync();
 
             var bucketName = _configuration["Aws:BucketName"];
-            var s3Client = new AmazonS3Client();
-            history.ForEach(x => x.PresignedUrl = GeneratePreSignedURL(bucketName, x.S3Key, s3Client, 1));
+            history.ForEach(x => x.PresignedUrl = GeneratePreSignedURL(bucketName, x.S3Key, 1));
             return Ok(history);
         }
         catch (System.Exception e)
@@ -200,13 +200,12 @@ public class WebcamController : ControllerBase
         try
         {
             var queueName = _configuration["Aws:QueueUrl"];
-            var sqsClient = new AmazonSQSClient();
             ReceiveMessageRequest request = new ReceiveMessageRequest
             {
                 WaitTimeSeconds = 0,
                 QueueUrl = queueName,
             };
-            var x = await sqsClient.ReceiveMessageAsync(request);
+            var x = await _sqsClient.ReceiveMessageAsync(request);
 
             _logger.LogInformation($"Messages in queue: {x.Messages.Count}");
             if (x.Messages.Count() == 0)
