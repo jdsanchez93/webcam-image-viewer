@@ -1,4 +1,5 @@
 {
+    "taskDefinitionArn": "arn:aws:ecs:us-east-2:515964707541:task-definition/webcam-image-viewer-task:5",
     "containerDefinitions": [
         {
             "name": "webcam-image-viewer",
@@ -6,9 +7,11 @@
             "memoryReservation": 300,
             "portMappings": [
                 {
+                    "name": "webcam-image-viewer-80-tcp",
                     "containerPort": 80,
                     "hostPort": 0,
-                    "protocol": "tcp"
+                    "protocol": "tcp",
+                    "appProtocol": "http"
                 }
             ],
             "essential": true,
@@ -31,12 +34,30 @@
             ]
         }
     ],
-    "family": "webcam-image-viewer-deploy",
-    "taskRoleArn": "ecsTaskExecutionRole",
+    "family": "webcam-image-viewer-task",
+    "taskRoleArn": "webcam-image-viewer-task-role",
     "executionRoleArn": "ecsTaskExecutionRole",
     "volumes": [],
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.secrets.ssm.environment-variables"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        }
+    ],
     "placementConstraints": [],
+    "compatibilities": [
+        "EC2"
+    ],
     "requiresCompatibilities": [
         "EC2"
-    ]
+    ],
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    }
 }

@@ -12,27 +12,22 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read  # This is required for actions/checkout
+
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    - name: Version pr
-      if: ${{ github.event_name == 'pull_request' }}
-      id: version-pr
-      uses: paulhatch/semantic-version@v4.0.2
-      with:
-        namespace: ${{ github.event.pull_request.head.ref }}
-        format: "${major}.${minor}.${patch}-prerelease${increment}"
-
     - name: Version
-      if: ${{ github.event_name == 'push' }}
       id: version
-      uses: paulhatch/semantic-version@v4.0.3
+      uses: paulhatch/semantic-version@v5.3.0
 
     - name: Login to Docker Hub
-      uses: docker/login-action@v1
+      uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -42,15 +37,14 @@ jobs:
       shell: bash
       run: ./build-scripts/docker.sh $VERSION $VERSION_TAG
       env:
-        VERSION: "${{ github.event_name == 'push' && steps.version.outputs.version || steps.version-pr.outputs.version }}"
+        VERSION: "${{ github.event_name == 'push' && steps.version.outputs.version || format('{0}-prerelease.{1}', steps.version.outputs.version, steps.version.outputs.increment) }}"
         VERSION_TAG: "${{ github.event_name == 'push' && steps.version.outputs.version_tag || '' }}"
 
     - name: Configure AWS credentials
       if: ${{ github.event_name == 'push' }}
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v4
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        role-to-assume: arn:aws:iam::515964707541:role/github-oidc-idp-role
         aws-region: us-east-2
 
     - name: Fill in the new image ID in the Amazon ECS task definition
