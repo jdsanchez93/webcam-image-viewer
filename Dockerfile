@@ -1,7 +1,8 @@
 FROM node:16.13.0 as clientbuild
 WORKDIR /usr/local/app
-COPY ./ClientApp /usr/local/app/
+COPY ./ClientApp/package.json ./ClientApp/package-lock.json .
 RUN npm install
+COPY ./ClientApp .
 RUN npm run build
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
