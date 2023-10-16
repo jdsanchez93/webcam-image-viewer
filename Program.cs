@@ -1,3 +1,5 @@
+using Amazon.S3;
+using Amazon.SQS;
 using Microsoft.EntityFrameworkCore;
 using webcam_image_viewer;
 
@@ -9,6 +11,11 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Note: this requires configuration such as AWS:Profile
+// See https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config-netcore.html
+builder.Services.AddAWSService<IAmazonSQS>();
+builder.Services.AddAWSService<IAmazonS3>();
 
 builder.Services.AddDbContext<WebcamDbContext>(
     dbContextOptions => dbContextOptions
