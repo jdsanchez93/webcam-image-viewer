@@ -1,5 +1,4 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-2:515964707541:task-definition/webcam-image-viewer-task:5",
     "containerDefinitions": [
         {
             "name": "webcam-image-viewer",
@@ -38,21 +37,7 @@
     "taskRoleArn": "webcam-image-viewer-task-role",
     "executionRoleArn": "ecsTaskExecutionRole",
     "volumes": [],
-    "requiresAttributes": [
-        {
-            "name": "com.amazonaws.ecs.capability.task-iam-role"
-        },
-        {
-            "name": "ecs.capability.secrets.ssm.environment-variables"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-        }
-    ],
     "placementConstraints": [],
-    "compatibilities": [
-        "EC2"
-    ],
     "requiresCompatibilities": [
         "EC2"
     ],
