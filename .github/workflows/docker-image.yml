@@ -62,7 +62,7 @@ jobs:
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
         service: webcam-image-viewer
-        cluster: ProjectsCluster
+        cluster: ProjectsProd
         wait-for-service-stability: true
         wait-for-minutes: 10
         force-new-deployment: true
