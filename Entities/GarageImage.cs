@@ -15,4 +15,6 @@ public class GarageImage
 
     [NotMapped]
     public string? PresignedUrl { get; set; }
+
+    public bool IsDelete { get; set; }
 }
