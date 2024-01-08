@@ -36,12 +36,23 @@ public class WebcamController : ControllerBase
     {
         try
         {
+            // Mark image for deletion
+            var i = _context.GarageImages.Find(queueMessage.LastImageId);
+            if (i == null)
+            {
+                _logger.LogWarning("Unable to delete imageId {x} (not found)", queueMessage.LastImageId);
+            }
+            else
+            {
+                i.IsDelete = true;
+            }
+
             var queueName = _configuration["Aws:QueueUrl"];
             var bucketName = _configuration["Aws:BucketName"];
 
             var imageId = Guid.NewGuid().ToString();
             queueMessage.ImageId = imageId;
-            
+
             string jsonString = JsonSerializer.Serialize(queueMessage);
             await SendMessage(_sqsClient, queueName, jsonString);
 

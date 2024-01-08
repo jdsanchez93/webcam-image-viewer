@@ -12,4 +12,5 @@ export interface SmartLightSettings {
 export interface QueueMessage {
     webcamSettings: WebcamSettings
     lightSettings?: SmartLightSettings
+    lastImageId?: number
 }

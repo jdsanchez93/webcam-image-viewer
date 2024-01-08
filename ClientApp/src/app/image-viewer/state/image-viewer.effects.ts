@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 import { WebcamService } from '../webcam.service';
 import { loadHistory, loadHistoryError, loadHistorySuccess, loadNewImage, loadNewImageError, loadNewImageSuccess, loadQueueStatus, loadQueueStatusError, loadQueueStatusSuccess, updateImage, updateImageError, updateImageSuccess } from './image-viewer.actions';
-import { selectLightSettings, selectWebcamSettings } from './image-viewer.selectors';
+import { selectCurrentImage, selectLightSettings, selectWebcamSettings } from './image-viewer.selectors';
 
 @Injectable()
 export class ImageViewerEffects {
@@ -16,9 +16,10 @@ export class ImageViewerEffects {
     ofType(loadNewImage),
     concatLatestFrom(() => [
       this.store.select(selectWebcamSettings),
-      this.store.select(selectLightSettings)
+      this.store.select(selectLightSettings),
+      this.store.select(selectCurrentImage)
     ]),
-    mergeMap(([_, webcamSettings, lightSettings]) => this.webcamService.postNewImage({webcamSettings, lightSettings}).pipe(
+    mergeMap(([_, webcamSettings, lightSettings, currentImage]) => this.webcamService.postNewImage({ webcamSettings, lightSettings, lastImageId: currentImage.garageImageId }).pipe(
       map(x => loadNewImageSuccess({ currentImage: x })),
       catchError((x: HttpErrorResponse) => {
         this.snackBar.open(`Error loading new image!`, 'Check status', { duration: 5000 }).onAction().subscribe(() => {
