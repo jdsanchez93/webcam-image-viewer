@@ -172,7 +172,9 @@ public class WebcamController : ControllerBase
     {
         try
         {
-            var history = await _context.GarageImages.OrderByDescending(x => x.ImageDate).Take(10).ToListAsync();
+            var history = await _context.GarageImages
+                .Where(i => i.IsDelete == false)
+                .OrderByDescending(x => x.ImageDate).Take(10).ToListAsync();
 
             var bucketName = _configuration["Aws:BucketName"];
             history.ForEach(x => x.PresignedUrl = GeneratePreSignedURL(bucketName, x.S3Key, 1));
