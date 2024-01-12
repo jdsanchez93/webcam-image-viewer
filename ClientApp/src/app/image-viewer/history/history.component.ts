@@ -29,6 +29,12 @@ export class HistoryComponent implements OnInit {
     }
   }
 
+  deleteImage(garageImageId: number) {
+    let partialGarageImage: Partial<GarageImage> = { garageImageId, isDelete: true }
+    this.store.dispatch(updateImage({ garageImageId: garageImageId, partialImage: partialGarageImage }));
+    this.setStep(-1);
+  }
+
   setStep(index: number) {
     this.step = index;
   }
