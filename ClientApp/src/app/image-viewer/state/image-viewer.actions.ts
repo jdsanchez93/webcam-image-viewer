@@ -15,6 +15,10 @@ export const updateImage = createAction('[Image Api] Update Image', props<{garag
 export const updateImageSuccess = createAction('[Image Api] Update Image Success', props<{garageImageId: number, partialImage: Partial<GarageImage>}>());
 export const updateImageError = createAction('[Image Api] Update Image Error');
 
+export const softDeleteImage = createAction('[Image Api] Soft Delete Image', props<{garageImageId: number}>());
+export const softDeleteImageSuccess = createAction('[Image Api] Soft Delete Image Success', props<{garageImageId: number, partialImage: Partial<GarageImage>}>());
+export const softDeleteImageError = createAction('[Image Api] Soft Delete Image Error');
+
 export const loadQueueStatus = createAction('[Image Api] Load Pi Status');
 export const loadQueueStatusSuccess = createAction('[Image Api] Load Pi Status Success', props<{ statusMessage: string }>());
 export const loadQueueStatusError = createAction('[Image Api] Load Pi Status Error', props<{ httpErrorResponse: HttpErrorResponse }>());

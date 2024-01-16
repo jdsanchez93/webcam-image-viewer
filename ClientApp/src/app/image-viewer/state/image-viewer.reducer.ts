@@ -42,7 +42,6 @@ export const imageViewerReducer = createReducer(
     }),
     on(ImageViewerActions.updateImageSuccess, (state, { garageImageId, partialImage }) => {
         const updatedImages = state.mostRecentImages
-            .filter(i => !(partialImage.isDelete && i.garageImageId == partialImage.garageImageId))
             .map(i => {
                 if (i.garageImageId === garageImageId) {
                     return { ...i, ...partialImage }
