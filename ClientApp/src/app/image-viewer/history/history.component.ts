@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { EditorFormComponent } from '../editor-form/editor-form.component';
 import { GarageImage } from '../image.models';
-import { loadHistory, updateImage } from '../state/image-viewer.actions';
+import { loadHistory, softDeleteImage, updateImage } from '../state/image-viewer.actions';
 import { selectHistory } from '../state/image-viewer.selectors';
 
 @Component({
@@ -27,6 +27,11 @@ export class HistoryComponent implements OnInit {
     if (partialGarageImage !== undefined) {
       this.store.dispatch(updateImage({ garageImageId: garageImageId, partialImage: partialGarageImage }));
     }
+  }
+
+  deleteImage(garageImageId: number) {
+    this.store.dispatch(softDeleteImage({ garageImageId }));
+    this.setStep(-1);
   }
 
   setStep(index: number) {

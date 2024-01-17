@@ -4,4 +4,5 @@ export interface GarageImage {
     imageDate?: Date;
     numberOfCars?: number;
     presignedUrl?: string;
+    isDelete?: boolean;
 }
