@@ -41,13 +41,12 @@ export const imageViewerReducer = createReducer(
         return { ...state, mostRecentImages: history }
     }),
     on(ImageViewerActions.updateImageSuccess, (state, { garageImageId, partialImage }) => {
-        const updatedImages = state.mostRecentImages
-            .map(i => {
-                if (i.garageImageId === garageImageId) {
-                    return { ...i, ...partialImage }
-                }
-                return i;
-            });
+        const updatedImages = state.mostRecentImages.map(i => {
+            if (i.garageImageId === garageImageId) {
+                return { ...i, ...partialImage }
+            }
+            return i;
+        });
         return { ...state, mostRecentImages: updatedImages };
     }),
     on(ImageViewerActions.loadNewImageError, (state) => {
