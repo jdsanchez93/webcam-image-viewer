@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { loadNewImage } from '../state/image-viewer.actions';
 import { selectCurrentImage, selectIsLoading } from '../state/image-viewer.selectors';
 import { GarageImage } from '../image.models';
@@ -13,6 +13,7 @@ import { GarageImage } from '../image.models';
 export class RequestNewImageComponent implements OnInit {
   currentImage$: Observable<GarageImage> = this.store.select(selectCurrentImage);
   isLoading$: Observable<boolean> = this.store.select(selectIsLoading);
+  checked: boolean = true;
 
   constructor(private store: Store) { }
 
@@ -20,7 +21,7 @@ export class RequestNewImageComponent implements OnInit {
   }
 
   requestNewImage() {
-    this.store.dispatch(loadNewImage());
+    this.store.dispatch(loadNewImage({ deleteLastImage: this.checked }));
   }
 
 }

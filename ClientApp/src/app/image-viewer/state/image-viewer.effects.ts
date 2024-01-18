@@ -19,7 +19,8 @@ export class ImageViewerEffects {
       this.store.select(selectLightSettings),
       this.store.select(selectCurrentImage)
     ]),
-    mergeMap(([_, webcamSettings, lightSettings, currentImage]) => this.webcamService.postNewImage({ webcamSettings, lightSettings, lastImageId: currentImage.garageImageId }).pipe(
+    // TODO make this more readable
+    mergeMap(([action, webcamSettings, lightSettings, currentImage]) => this.webcamService.postNewImage({ webcamSettings, lightSettings, lastImageId: ((action.deleteLastImage && !!currentImage.garageImageId) ? currentImage.garageImageId : undefined) }).pipe(
       map(x => loadNewImageSuccess({ currentImage: x })),
       catchError((x: HttpErrorResponse) => {
         this.snackBar.open(`Error loading new image!`, 'Check status', { duration: 5000 }).onAction().subscribe(() => {

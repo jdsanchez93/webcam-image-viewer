@@ -13,7 +13,7 @@ import { HistoryComponent } from './history/history.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditorFormComponent } from './editor-form/editor-form.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { QueueStatusComponent } from './queue-status/queue-status.component';
@@ -24,6 +24,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { LightSettingsComponent } from './settings/light-settings/light-settings.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AdvancedSettingsComponent } from './settings/advanced-settings/advanced-settings.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,9 @@ import { AdvancedSettingsComponent } from './settings/advanced-settings/advanced
     MatIconModule,
     MatCardModule,
     MatSliderModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatCheckboxModule,
+    FormsModule
   ]
 })
 export class ImageViewerModule { }

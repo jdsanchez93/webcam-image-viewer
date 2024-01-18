@@ -3,16 +3,22 @@
 </div>
 
 <div class="new-image-container">
-    <button mat-raised-button (click)="requestNewImage()">New Image</button>
+    <div class="button-container">
+
+        <button mat-raised-button (click)="requestNewImage()">New Image</button>
+        <ng-container *ngIf="(this.currentImage$ | async)?.presignedUrl">
+            <mat-checkbox [(ngModel)]="checked">Delete current image</mat-checkbox>
+        </ng-container>
+    </div>
     <div style="padding-top: 10px;">
         <ng-container *ngIf="this.isLoading$ | async as isLoading else elseBlock">
             <mat-spinner></mat-spinner>
         </ng-container>
 
         <ng-template #elseBlock>
-            <ng-container *ngIf="this.currentImage$ | async as i">
+            <ng-container *ngIf="(this.currentImage$ | async)?.presignedUrl as p">
                 <div>
-                    <img style="object-fit: cover; width: 100%;" [src]="i.presignedUrl">
+                    <img style="object-fit: cover; width: 100%;" [src]="p">
                 </div>
             </ng-container>
         </ng-template>
