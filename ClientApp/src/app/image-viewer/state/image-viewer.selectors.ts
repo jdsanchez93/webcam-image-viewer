@@ -32,3 +32,8 @@ export const selectLightSettings = createSelector(
   selectImageViewerFeature,
   state => state.lightSettings
 );
+
+export const selectIsDeleteLastImage = createSelector(
+  selectImageViewerFeature,
+  state => state.isDeleteLastImage 
+);

@@ -25,6 +25,7 @@ import { LightSettingsComponent } from './settings/light-settings/light-settings
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AdvancedSettingsComponent } from './settings/advanced-settings/advanced-settings.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ImageSettingsComponent } from './settings/image-settings/image-settings.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     WebcamSettingsComponent,
     LightSettingsComponent,
     AdvancedSettingsComponent,
+    ImageSettingsComponent,
   ],
   imports: [
     CommonModule,

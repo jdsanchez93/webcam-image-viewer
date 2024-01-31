@@ -13,6 +13,7 @@ export interface ImageViewerState {
     queueStatus?: QueueStatus,
     webcamSettings: WebcamSettings
     lightSettings?: SmartLightSettings
+    isDeleteLastImage: boolean
 }
 
 export const initialState: ImageViewerState = {
@@ -24,7 +25,8 @@ export const initialState: ImageViewerState = {
     webcamSettings: {
         brightness: 100,
         contrast: 32
-    }
+    },
+    isDeleteLastImage: false
 }
 
 export const imageViewerReducer = createReducer(
