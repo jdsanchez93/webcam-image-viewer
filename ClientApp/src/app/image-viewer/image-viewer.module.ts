@@ -13,7 +13,7 @@ import { HistoryComponent } from './history/history.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { EditorFormComponent } from './editor-form/editor-form.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { QueueStatusComponent } from './queue-status/queue-status.component';
@@ -54,8 +54,7 @@ import { ImageSettingsComponent } from './settings/image-settings/image-settings
     MatCardModule,
     MatSliderModule,
     MatSlideToggleModule,
-    MatCheckboxModule,
-    FormsModule
+    MatCheckboxModule
   ]
 })
 export class ImageViewerModule { }

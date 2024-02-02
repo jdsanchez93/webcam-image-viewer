@@ -13,7 +13,6 @@ import { GarageImage } from '../image.models';
 export class RequestNewImageComponent implements OnInit {
   currentImage$: Observable<GarageImage> = this.store.select(selectCurrentImage);
   isLoading$: Observable<boolean> = this.store.select(selectIsLoading);
-  checked: boolean = true;
 
   constructor(private store: Store) { }
 
@@ -21,7 +20,7 @@ export class RequestNewImageComponent implements OnInit {
   }
 
   requestNewImage() {
-    this.store.dispatch(loadNewImage({ deleteLastImage: this.checked }));
+    this.store.dispatch(loadNewImage());
   }
 
 }

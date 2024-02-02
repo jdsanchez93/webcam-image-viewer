@@ -29,7 +29,7 @@ export class ImageSettingsComponent implements OnInit {
 
     this.imageSettingsFormGroup.valueChanges
       .pipe(
-        tap(x => this.store.dispatch(updateIsDeleteLastImage({ isDeleteLastImage: x })))
+        tap(x => this.store.dispatch(updateIsDeleteLastImage({ isDeleteLastImage: x.isDeleteLastImage })))
       )
       .subscribe();
   }

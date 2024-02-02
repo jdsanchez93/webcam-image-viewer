@@ -7,7 +7,7 @@
 
         <button mat-raised-button (click)="requestNewImage()">New Image</button>
         <ng-container *ngIf="(this.currentImage$ | async)?.presignedUrl">
-            <mat-checkbox [(ngModel)]="checked">Delete current image</mat-checkbox>
+            <app-image-settings></app-image-settings>
         </ng-container>
     </div>
     <div style="padding-top: 10px;">

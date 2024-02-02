@@ -34,6 +34,7 @@ export const imageViewerReducer = createReducer(
     on(ImageViewerActions.loadNewImageSuccess, (state, { currentImage }) => ({
         ...state,
         loading: false,
+        isDeleteLastImage: (state.currentImage.garageImageId === 0 ? true : state.isDeleteLastImage),
         currentImage: currentImage
     })),
     on(ImageViewerActions.loadNewImage, (state) => {
@@ -68,5 +69,8 @@ export const imageViewerReducer = createReducer(
     }),
     on(ImageViewerActions.updateLightSettings, (state, { lightSettings }) => {
         return { ...state, lightSettings: lightSettings }
+    }),
+    on(ImageViewerActions.updateIsDeleteLastImage, (state, { isDeleteLastImage }) => {
+        return { ...state, isDeleteLastImage: isDeleteLastImage }
     }),
 )
