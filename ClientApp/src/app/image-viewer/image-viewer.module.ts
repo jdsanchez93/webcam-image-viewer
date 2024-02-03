@@ -24,6 +24,8 @@ import { MatSliderModule } from '@angular/material/slider';
 import { LightSettingsComponent } from './settings/light-settings/light-settings.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AdvancedSettingsComponent } from './settings/advanced-settings/advanced-settings.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ImageSettingsComponent } from './settings/image-settings/image-settings.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import { AdvancedSettingsComponent } from './settings/advanced-settings/advanced
     WebcamSettingsComponent,
     LightSettingsComponent,
     AdvancedSettingsComponent,
+    ImageSettingsComponent,
   ],
   imports: [
     CommonModule,
@@ -50,7 +53,8 @@ import { AdvancedSettingsComponent } from './settings/advanced-settings/advanced
     MatIconModule,
     MatCardModule,
     MatSliderModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatCheckboxModule
   ]
 })
 export class ImageViewerModule { }
