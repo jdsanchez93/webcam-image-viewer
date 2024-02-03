@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable, tap } from 'rxjs';
 import { loadNewImage } from '../state/image-viewer.actions';
-import { selectCurrentImage, selectIsLoading } from '../state/image-viewer.selectors';
+import { selectCurrentImage, selectCurrentPresignedUrl, selectIsLoading } from '../state/image-viewer.selectors';
 import { GarageImage } from '../image.models';
 
 @Component({
@@ -11,8 +11,8 @@ import { GarageImage } from '../image.models';
   styleUrls: ['./request-new-image.component.scss']
 })
 export class RequestNewImageComponent implements OnInit {
-  currentImage$: Observable<GarageImage> = this.store.select(selectCurrentImage);
   isLoading$: Observable<boolean> = this.store.select(selectIsLoading);
+  presignedUrl$ = this.store.select(selectCurrentPresignedUrl);
 
   constructor(private store: Store) { }
 

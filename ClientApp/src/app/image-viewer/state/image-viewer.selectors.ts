@@ -37,3 +37,8 @@ export const selectIsDeleteLastImage = createSelector(
   selectImageViewerFeature,
   state => state.isDeleteLastImage 
 );
+
+export const selectCurrentPresignedUrl = createSelector(
+  selectImageViewerFeature,
+  state => state.currentImage.presignedUrl
+);

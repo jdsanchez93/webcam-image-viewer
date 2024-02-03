@@ -4,9 +4,8 @@
 
 <div class="new-image-container">
     <div class="button-container">
-
         <button mat-raised-button (click)="requestNewImage()">New Image</button>
-        <ng-container *ngIf="(this.currentImage$ | async)?.presignedUrl">
+        <ng-container *ngIf="(this.presignedUrl$ | async)">
             <app-image-settings></app-image-settings>
         </ng-container>
     </div>
@@ -16,7 +15,7 @@
         </ng-container>
 
         <ng-template #elseBlock>
-            <ng-container *ngIf="(this.currentImage$ | async)?.presignedUrl as p">
+            <ng-container *ngIf="this.presignedUrl$ | async as p">
                 <div>
                     <img style="object-fit: cover; width: 100%;" [src]="p">
                 </div>
