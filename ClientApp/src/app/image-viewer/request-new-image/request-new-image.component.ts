@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { Observable, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { loadNewImage } from '../state/image-viewer.actions';
-import { selectCurrentImage, selectCurrentPresignedUrl, selectIsLoading } from '../state/image-viewer.selectors';
-import { GarageImage } from '../image.models';
+import { selectCurrentPresignedUrl, selectIsLoading } from '../state/image-viewer.selectors';
 
 @Component({
   selector: 'app-request-new-image',
