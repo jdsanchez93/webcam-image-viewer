@@ -73,4 +73,10 @@ export const imageViewerReducer = createReducer(
     on(ImageViewerActions.updateIsDeleteLastImage, (state, { isDeleteLastImage }) => {
         return { ...state, isDeleteLastImage: isDeleteLastImage }
     }),
+    on(ImageViewerActions.softDeleteImage, (state, { garageImageId }) => {
+        if (state.currentImage.garageImageId === garageImageId) {
+            return { ...state, currentImage: { garageImageId: 0 } }
+        }
+        return { ...state };
+    }),
 )
