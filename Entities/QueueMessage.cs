@@ -7,4 +7,6 @@ public class QueueMessage
     public WebcamSettings? WebcamSettings { get; set; }
 
     public SmartLightSettings? LightSettings { get; set; }
+
+    public int LastImageId { get; set; }
 }

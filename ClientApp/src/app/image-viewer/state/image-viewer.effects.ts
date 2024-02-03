@@ -6,8 +6,8 @@ import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 import { WebcamService } from '../webcam.service';
-import { loadHistory, loadHistoryError, loadHistorySuccess, loadNewImage, loadNewImageError, loadNewImageSuccess, loadQueueStatus, loadQueueStatusError, loadQueueStatusSuccess, updateImage, updateImageError, updateImageSuccess } from './image-viewer.actions';
-import { selectLightSettings, selectWebcamSettings } from './image-viewer.selectors';
+import { softDeleteImage, loadHistory, loadHistoryError, loadHistorySuccess, loadNewImage, loadNewImageError, loadNewImageSuccess, loadQueueStatus, loadQueueStatusError, loadQueueStatusSuccess, updateImage, updateImageError, updateImageSuccess, softDeleteImageError, softDeleteImageSuccess } from './image-viewer.actions';
+import { selectCurrentImage, selectIsDeleteLastImage, selectLightSettings, selectWebcamSettings } from './image-viewer.selectors';
 
 @Injectable()
 export class ImageViewerEffects {
@@ -16,9 +16,11 @@ export class ImageViewerEffects {
     ofType(loadNewImage),
     concatLatestFrom(() => [
       this.store.select(selectWebcamSettings),
-      this.store.select(selectLightSettings)
+      this.store.select(selectLightSettings),
+      this.store.select(selectCurrentImage),
+      this.store.select(selectIsDeleteLastImage)
     ]),
-    mergeMap(([_, webcamSettings, lightSettings]) => this.webcamService.postNewImage({webcamSettings, lightSettings}).pipe(
+    mergeMap(([_, webcamSettings, lightSettings, currentImage, isDeleteLastImage]) => this.webcamService.postNewImage({ webcamSettings, lightSettings, lastImageId: (isDeleteLastImage ? currentImage.garageImageId : undefined) }).pipe(
       map(x => loadNewImageSuccess({ currentImage: x })),
       catchError((x: HttpErrorResponse) => {
         this.snackBar.open(`Error loading new image!`, 'Check status', { duration: 5000 }).onAction().subscribe(() => {
@@ -45,6 +47,18 @@ export class ImageViewerEffects {
         return updateImageSuccess({ garageImageId: action.garageImageId, partialImage: action.partialImage })
       }),
       catchError(() => [updateImageError()])
+    ))
+  ));
+
+  softDeleteImage$ = createEffect(() => this.actions$.pipe(
+    ofType(softDeleteImage),
+    mergeMap(action => this.webcamService.patchGarageImage(action.garageImageId, { garageImageId: action.garageImageId, isDelete: true }).pipe(
+      map(() => {
+        this.snackBar.open('Deleted', undefined, { duration: 1000 });
+        return softDeleteImageSuccess({ garageImageId: action.garageImageId });
+      }),
+      map(() => loadHistory()),
+      catchError(() => [softDeleteImageError()])
     ))
   ));
 

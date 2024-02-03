@@ -21,6 +21,7 @@
             </ng-template>
 
             <mat-action-row>
+                <button mat-stroked-button color="warn" (click)="deleteImage(x.garageImageId)">Delete</button>
                 <button mat-raised-button color="primary" (click)="saveImage(x.garageImageId)">Save</button>
             </mat-action-row>
         </mat-expansion-panel>

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using webcam_image_viewer;
 
@@ -10,9 +11,10 @@ using webcam_image_viewer;
 namespace webcam_image_viewer.Migrations
 {
     [DbContext(typeof(WebcamDbContext))]
-    partial class WebcamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231028214539_DeleteImage")]
+    partial class DeleteImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
