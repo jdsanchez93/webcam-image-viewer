@@ -13,7 +13,7 @@ docker push $IMAGE_NAME
 # push tag if second arg is not blank
 if [ ! -z "$2" ]; then
     git tag $2
-    git push origin --tags
+    git push origin $2
 fi
 
 echo "image=$IMAGE_NAME" >> $GITHUB_OUTPUT
