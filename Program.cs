@@ -3,6 +3,10 @@ using Amazon.SQS;
 using Microsoft.EntityFrameworkCore;
 using webcam_image_viewer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,13 +24,22 @@ builder.Services.AddAWSService<IAmazonS3>();
 
 builder.Services.AddAuthentication(options =>
     {
-        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
     })
-    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+    .AddCookie()
+    .AddOpenIdConnect(options =>
     {
-        options.Authority = builder.Configuration["Auth:Authority"];
-        options.Audience = builder.Configuration["Auth:Audience"];
-        options.RequireHttpsMetadata = false; // TODO
+        options.ResponseType = "code";
+        options.MetadataAddress = builder.Configuration["Auth:MetadataAddress"];
+        options.ClientId = builder.Configuration["Auth:ClientId"];
+        options.ClientSecret = builder.Configuration["Auth:ClientSecret"];
+        options.SaveTokens = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true
+        };
     });
 
 
@@ -51,6 +64,12 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseStaticFiles();
+
+var cookiePolicyOptions = new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.Lax,
+};
+app.UseCookiePolicy(cookiePolicyOptions);
 
 app.UseAuthentication();
 app.UseAuthorization();
