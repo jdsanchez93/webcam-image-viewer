@@ -31,17 +31,38 @@ builder.Services.AddAuthentication(options =>
     .AddCookie()
     .AddOpenIdConnect(options =>
     {
-        options.ResponseType = "code";
-        options.MetadataAddress = builder.Configuration["Auth:MetadataAddress"];
-        options.ClientId = builder.Configuration["Auth:ClientId"];
-        options.ClientSecret = builder.Configuration["Auth:ClientSecret"];
+        options.ResponseType = builder.Configuration["Cognito:ResponseType"];
+        options.MetadataAddress = builder.Configuration["Cognito:MetadataAddress"];
+        options.ClientId = builder.Configuration["Cognito:ClientId"];
+        options.ClientSecret = builder.Configuration["Cognito:ClientSecret"];
         options.SaveTokens = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true
         };
+        options.Events = new OpenIdConnectEvents
+        {
+            OnRedirectToIdentityProviderForSignOut = OnRedirectToIdentityProviderForSignOut
+        };
     });
 
+static Task OnRedirectToIdentityProviderForSignOut(RedirectContext context)
+{
+    var configuration = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
+    context.ProtocolMessage.Scope = "openid";
+    context.ProtocolMessage.ResponseType = "code";
+
+    var cognitoDomain = configuration["Cognito:Domain"];
+    var clientId = configuration["Cognito:ClientId"];
+    var appSignOutUrl = configuration["Cognito:AppSignOutUrl"];
+
+    var logoutUrl = $"{context.Request.Scheme}://{context.Request.Host}{appSignOutUrl}";
+
+    context.ProtocolMessage.IssuerAddress = $"{cognitoDomain}/logout?client_id={clientId}" +
+                                            $"&logout_uri={logoutUrl}";
+
+    return Task.CompletedTask;
+}
 
 builder.Services.AddDbContext<WebcamDbContext>(
     dbContextOptions => dbContextOptions
