@@ -36,6 +36,8 @@ builder.Services.AddAuthentication(options =>
         options.ClientId = builder.Configuration["Cognito:ClientId"];
         options.ClientSecret = builder.Configuration["Cognito:ClientSecret"];
         options.SaveTokens = true;
+        options.SignedOutCallbackPath = builder.Configuration["Cognito:AppSignOutUrl"];
+        options.SignedOutRedirectUri = "http://localhost:4200";
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true

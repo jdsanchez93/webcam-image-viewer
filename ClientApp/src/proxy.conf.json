@@ -2,5 +2,17 @@
     "/api": {
         "target": "http://localhost:5039",
         "secure": false
+    },
+    "/signin-oidc": {
+        "target": "http://localhost:5039",
+        "secure": false
+    },
+    "/signout": {
+        "target": "http://localhost:5039",
+        "secure": false
+    },
+    "/signout-oidc": {
+        "target": "http://localhost:5039",
+        "secure": false
     }
 }
