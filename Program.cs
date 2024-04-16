@@ -1,7 +1,9 @@
 using Amazon.S3;
 using Amazon.SQS;
+using Auth0.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using webcam_image_viewer;
+using webcam_image_viewer.Support;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,13 @@ builder.Services.AddSwaggerGen();
 // See https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config-netcore.html
 builder.Services.AddAWSService<IAmazonSQS>();
 builder.Services.AddAWSService<IAmazonS3>();
+
+builder.Services.AddAuth0WebAppAuthentication(options =>
+{
+    options.Domain = builder.Configuration["Auth0:Domain"];
+    options.ClientId = builder.Configuration["Auth0:ClientId"];
+});
+builder.Services.ConfigureSameSiteNoneCookies();
 
 builder.Services.AddDbContext<WebcamDbContext>(
     dbContextOptions => dbContextOptions
@@ -38,7 +47,9 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseStaticFiles();
+app.UseCookiePolicy();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
