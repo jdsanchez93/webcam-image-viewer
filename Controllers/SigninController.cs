@@ -23,13 +23,8 @@ public class SigninController : ControllerBase
     [HttpGet("/signout")]
     public async Task Signout()
     {
-        var props = new AuthenticationProperties
-        {
-            RedirectUri = "http://localhost:4200/",
-        };
-
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme, props);
-        await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme, props);
+        await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     }
 
     [HttpGet("/login")]
