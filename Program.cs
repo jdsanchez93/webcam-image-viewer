@@ -36,9 +36,8 @@ builder.Services.AddAuthentication(options =>
         options.ClientId = builder.Configuration["Cognito:ClientId"];
         options.ClientSecret = builder.Configuration["Cognito:ClientSecret"];
         options.SaveTokens = true;
-        // options.SignedOutCallbackPath = builder.Configuration["Cognito:AppSignOutUrl"];
-        options.SignedOutRedirectUri = "http://localhost:4200/image-viewer/history";
-        // options.RemoteSignOutPath = "/test";
+        options.SignedOutCallbackPath = builder.Configuration["Cognito:AppSignOutUrl"];
+        options.SignedOutRedirectUri = builder.Configuration["Cognito:SignedOutRedirectUri"];
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true
@@ -47,24 +46,16 @@ builder.Services.AddAuthentication(options =>
         {
             OnRedirectToIdentityProviderForSignOut = OnRedirectToIdentityProviderForSignOut,
             OnSignedOutCallbackRedirect = OnSignedOutCallbackRedirect,
-            OnRemoteSignOut = OnRemoteSignOut
         };
     });
 
 static Task OnSignedOutCallbackRedirect(RemoteSignOutContext context)
 {
-    Console.WriteLine(context.ProtocolMessage?.RedirectUri);
-    // if (context.ProtocolMessage != null)
-    // {
-    //     context.ProtocolMessage.RedirectUri = "http://localhost:4200/api/signin/GetUser";
-    // }
-    return Task.CompletedTask;
-}
-
-
-static Task OnRemoteSignOut(RemoteSignOutContext context)
-{
-    Console.WriteLine(context.ProtocolMessage?.RedirectUri);
+    var configuration = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
+    context.Properties ??= new Microsoft.AspNetCore.Authentication.AuthenticationProperties()
+        {
+            RedirectUri = context.Options.SignedOutRedirectUri
+        };
     return Task.CompletedTask;
 }
 
@@ -73,7 +64,6 @@ static Task OnRedirectToIdentityProviderForSignOut(RedirectContext context)
     var configuration = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
     context.ProtocolMessage.Scope = "openid";
     context.ProtocolMessage.ResponseType = "code";
-    // context.ProtocolMessage.RedirectUri = "http://localhost:4200/image-viewer/history";
 
     var cognitoDomain = configuration["Cognito:Domain"];
     var clientId = configuration["Cognito:ClientId"];
@@ -82,7 +72,7 @@ static Task OnRedirectToIdentityProviderForSignOut(RedirectContext context)
     var logoutUrl = $"{context.Request.Scheme}://{context.Request.Host}{appSignOutUrl}";
 
     context.ProtocolMessage.IssuerAddress = $"{cognitoDomain}/logout?client_id={clientId}" +
-                                            $"&redirect_uri={logoutUrl}";
+                                            $"&logout_uri={logoutUrl}";
 
     return Task.CompletedTask;
 }
