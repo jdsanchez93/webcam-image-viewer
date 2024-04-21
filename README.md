@@ -36,6 +36,10 @@ dotnet user-secrets set "Aws:QueueUrl" "<value>"
 dotnet user-secrets set "Aws:BucketName" "<value>"
 dotnet user-secrets set "AWS:Profile" "webcam-image-viewer-dev"
 dotnet user-secrets set "AWS:Region" "us-east-2"
+dotnet user-secrets set "Cognito:ClientId" "<value>"
+dotnet user-secrets set "Cognito:ClientSecret" "<value>"
+dotnet user-secrets set "Cognito:MetadataAddress" "<value>"
+dotnet user-secrets set "Cognito:Domain" "<value>"
 ```
 Alternatively, you may use environment variables to set these values.
 

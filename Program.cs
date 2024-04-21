@@ -36,15 +36,28 @@ builder.Services.AddAuthentication(options =>
         options.ClientId = builder.Configuration["Cognito:ClientId"];
         options.ClientSecret = builder.Configuration["Cognito:ClientSecret"];
         options.SaveTokens = true;
+        options.SignedOutCallbackPath = builder.Configuration["Cognito:AppSignOutUrl"];
+        options.SignedOutRedirectUri = builder.Configuration["Cognito:SignedOutRedirectUri"];
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true
         };
         options.Events = new OpenIdConnectEvents
         {
-            OnRedirectToIdentityProviderForSignOut = OnRedirectToIdentityProviderForSignOut
+            OnRedirectToIdentityProviderForSignOut = OnRedirectToIdentityProviderForSignOut,
+            OnSignedOutCallbackRedirect = OnSignedOutCallbackRedirect,
         };
     });
+
+static Task OnSignedOutCallbackRedirect(RemoteSignOutContext context)
+{
+    var configuration = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
+    context.Properties ??= new Microsoft.AspNetCore.Authentication.AuthenticationProperties()
+        {
+            RedirectUri = context.Options.SignedOutRedirectUri
+        };
+    return Task.CompletedTask;
+}
 
 static Task OnRedirectToIdentityProviderForSignOut(RedirectContext context)
 {
