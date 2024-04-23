@@ -29,6 +29,22 @@
                 {
                     "valueFrom": "webcam-image-viewer-env-Aws-BucketName",
                     "name": "Aws__BucketName"
+                },
+                {
+                    "valueFrom": "webcam-image-viewer-env-cognito-metadataaddress",
+                    "name": "Cognito__MetadataAddress"
+                },
+                {
+                    "valueFrom": "webcam-image-viewer-env-cognito-domain",
+                    "name": "Cognito__Domain"
+                },
+                {
+                    "valueFrom": "webcam-image-viewer-env-cognito-clientsecret",
+                    "name": "Cognito__ClientSecret"
+                },
+                {
+                    "valueFrom": "webcam-image-viewer-env-cognito-clientid",
+                    "name": "Cognito__ClientId"
                 }
             ]
         }
