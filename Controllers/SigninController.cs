@@ -38,29 +38,19 @@ public class SigninController : ControllerBase
         await HttpContext.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, props);
     }
 
-    [HttpGet("GetUser")]
-    public IActionResult GetUser()
+    [HttpGet("IsSignedIn")]
+    public IActionResult IsSignedIn()
     {
         var isAuthenticated = HttpContext.User.Identity?.IsAuthenticated;
-        if (isAuthenticated == true)
-        {
-            return Ok(HttpContext.User.FindFirstValue("cognito:username"));
-        }
-        return Ok("not signed in");
+        return Ok(isAuthenticated);
     }
 
     [Authorize]
-    [HttpGet("Test")]
-    public IActionResult Test()
+    [HttpGet("GetUserName")]
+    public IActionResult GetUserName()
     {
-        var x = new GarageImage()
-        {
-            GarageImageId = 1,
-            PresignedUrl = User?.Identity?.Name,
-            S3Key = User?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value,
-
-        };
-        return Ok(x);
+        var cognitoUserName = HttpContext.User.FindFirstValue("cognito:username");
+        return Ok(cognitoUserName);
     }
 
 }

@@ -168,7 +168,6 @@ public class WebcamController : ControllerBase
         }
     }
 
-    [Authorize]
     [HttpGet("History")]
     public async Task<IActionResult> GetHistory()
     {
