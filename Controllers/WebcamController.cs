@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.JsonPatch;
 using System.Text.Json;
-using Microsoft.AspNetCore.Authorization;
 
 namespace webcam_image_viewer.Controllers;
 
