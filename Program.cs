@@ -2,8 +2,6 @@ using Amazon.S3;
 using Amazon.SQS;
 using Microsoft.EntityFrameworkCore;
 using webcam_image_viewer;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
