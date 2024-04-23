@@ -20,6 +20,7 @@ public class SigninController : ControllerBase
         _logger = logger;
     }
 
+    [Authorize]
     [HttpGet("/signout")]
     public async Task Signout()
     {
@@ -28,17 +29,11 @@ public class SigninController : ControllerBase
     }
 
     [HttpGet("/login")]
-    public async Task Signin()
+    public async Task Signin(string? returnUrl = "/")
     {
-        var isAuthenticated = HttpContext.User.Identity?.IsAuthenticated;
-
-        if (isAuthenticated == true)
-        {
-            return;
-        }
         var props = new AuthenticationProperties
         {
-            RedirectUri = "http://localhost:4200/"
+            RedirectUri = returnUrl
         };
         await HttpContext.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, props);
     }
@@ -61,7 +56,9 @@ public class SigninController : ControllerBase
         var x = new GarageImage()
         {
             GarageImageId = 1,
-            PresignedUrl = "test"
+            PresignedUrl = User?.Identity?.Name,
+            S3Key = User?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value,
+
         };
         return Ok(x);
     }
