@@ -14,7 +14,12 @@
                 }
             ],
             "essential": true,
-            "environment": [],
+            "environment": [
+                {
+                    "name": "ASPNETCORE_FORWARDEDHEADERS_ENABLED",
+                    "value": "true"
+                }
+            ],
             "mountPoints": [],
             "volumesFrom": [],
             "secrets": [
