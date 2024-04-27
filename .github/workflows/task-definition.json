@@ -18,6 +18,10 @@
                 {
                     "name": "ASPNETCORE_FORWARDEDHEADERS_ENABLED",
                     "value": "true"
+                },
+                {
+                    "name": "SignedOutRedirectUri",
+                    "value": "/"
                 }
             ],
             "mountPoints": [],
