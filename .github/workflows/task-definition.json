@@ -20,7 +20,7 @@
                     "value": "true"
                 },
                 {
-                    "name": "SignedOutRedirectUri",
+                    "name": "Cognito__SignedOutRedirectUri",
                     "value": "/"
                 }
             ],
