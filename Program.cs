@@ -36,6 +36,7 @@ builder.Services.AddAuthentication(options =>
         options.SaveTokens = true;
         options.SignedOutCallbackPath = builder.Configuration["Cognito:AppSignOutUrl"];
         options.SignedOutRedirectUri = builder.Configuration["Cognito:SignedOutRedirectUri"];
+        options.Scope.Add("email");
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true
