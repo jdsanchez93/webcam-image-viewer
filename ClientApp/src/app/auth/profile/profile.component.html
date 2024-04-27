@@ -1,3 +1,28 @@
-<span>
-    {{userName}}
-</span>
+<button mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon>person</mat-icon>
+</button>
+
+<mat-menu #menu="matMenu">
+
+  <ng-container *ngIf="this.isSignedIn else elseBlock">
+    <mat-card>
+      <mat-card-header>
+        <img mat-card-avatar [src]="userProfile?.picture || 'https://material.angular.io/assets/img/examples/shiba1.jpg'">
+        <mat-card-title>{{userProfile?.name || userProfile?.userName}}</mat-card-title>
+        <mat-card-subtitle>{{userProfile?.email}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          {{userProfile?.userName}}
+        </p>
+      </mat-card-content>
+    </mat-card>
+    <button mat-menu-item (click)="signout()">Signout</button>
+
+  </ng-container>
+
+  <ng-template #elseBlock>
+    <button mat-menu-item (click)="signin()">Signin</button>
+  </ng-template>
+
+</mat-menu>

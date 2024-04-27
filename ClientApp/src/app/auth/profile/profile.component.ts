@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { map, mergeMap, of, tap } from 'rxjs';
+import { UserProfile } from '../auth.models';
 
 @Component({
   selector: 'app-profile',
@@ -9,7 +10,8 @@ import { map, mergeMap, of, tap } from 'rxjs';
 })
 export class ProfileComponent implements OnInit {
 
-  userName: string = '';
+  userProfile?: UserProfile = undefined;
+  isSignedIn: boolean = false;
 
   constructor(private authService: AuthService) { }
 
@@ -17,16 +19,23 @@ export class ProfileComponent implements OnInit {
     this.authService.isSignedIn()
       .pipe(
         mergeMap(isSignedIn => {
+          this.isSignedIn = isSignedIn;
           if (isSignedIn) {
-            return this.authService.getUserName()
+            return this.authService.getUserProfile()
           }
-          return of('not signed in')
+          return of(undefined)
         }),
-        tap(x => this.userName = x)
+        tap(x => this.userProfile = x)
       )
       .subscribe();
   }
 
+  signin() {
+    this.authService.signin();
+  }
 
+  signout() {
+    this.authService.signout();
+  }
 
 }

@@ -46,11 +46,17 @@ public class SigninController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("GetUserName")]
-    public IActionResult GetUserName()
+    [HttpGet("GetUserProfile")]
+    public IActionResult GetUserProfile()
     {
-        var cognitoUserName = HttpContext.User.FindFirstValue("cognito:username");
-        return Ok(cognitoUserName);
+        var userProfile = new UserProfile()
+        {
+            Email = HttpContext.User.FindFirstValue(ClaimTypes.Email),
+            Name = HttpContext.User.FindFirstValue("Name"),
+            UserName = HttpContext.User.FindFirstValue("cognito:username"),
+            Picture = HttpContext.User.FindFirstValue("picture")
+        };
+        return Ok(userProfile);
     }
 
 }
