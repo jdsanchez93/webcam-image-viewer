@@ -3,9 +3,23 @@
         <mat-panel-title>Advanced settings</mat-panel-title>
     </mat-expansion-panel-header>
     <div>
-        <app-webcam-settings></app-webcam-settings>
-        <app-light-settings></app-light-settings>
+        <!-- <app-webcam-settings [brightness]="0" [contrast]="0"></app-webcam-settings> -->
+        <!-- <app-light-settings></app-light-settings> -->
     </div>
+
+    <form [formGroup]="advancedSettingsForm" class="form-grid">
+        <div formControlName="">
+            <div class="slider-form">
+                <span>Brightness</span>
+                <mat-slider thumbLabel min="0" max="255" tickInterval="auto" formControlName="brightness"></mat-slider>
+            </div>
+            <div class="slider-form">
+                <span>Contrast</span>
+                <mat-slider thumbLabel min="0" max="255" tickInterval="auto" formControlName="contrast"></mat-slider>
+            </div>
+        </div>
+
+    </form>
 
     <mat-action-row>
         <button mat-button color="warn" (click)="reset()">Reset</button>

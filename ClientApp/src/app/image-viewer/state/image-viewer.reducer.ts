@@ -11,9 +11,6 @@ export interface ImageViewerState {
     currentImage: GarageImage
     mostRecentImages: GarageImage[],
     queueStatus?: QueueStatus,
-    webcamSettings: WebcamSettings
-    lightSettings?: SmartLightSettings
-    isDeleteLastImage: boolean
 }
 
 export const initialState: ImageViewerState = {
@@ -21,12 +18,7 @@ export const initialState: ImageViewerState = {
     currentImage: {
         garageImageId: 0
     },
-    mostRecentImages: [],
-    webcamSettings: {
-        brightness: 100,
-        contrast: 32
-    },
-    isDeleteLastImage: false
+    mostRecentImages: []
 }
 
 export const imageViewerReducer = createReducer(
@@ -34,7 +26,6 @@ export const imageViewerReducer = createReducer(
     on(ImageViewerActions.loadNewImageSuccess, (state, { currentImage }) => ({
         ...state,
         loading: false,
-        isDeleteLastImage: (state.currentImage.garageImageId === 0 ? true : state.isDeleteLastImage),
         currentImage: currentImage
     })),
     on(ImageViewerActions.loadNewImage, (state) => {
@@ -64,15 +55,7 @@ export const imageViewerReducer = createReducer(
     on(ImageViewerActions.loadQueueStatusError, (state, { httpErrorResponse }) => {
         return { ...state, loading: false, queueStatus: { message: httpErrorResponse.error, iconName: 'error' } }
     }),
-    on(ImageViewerActions.updateWebcamSettings, (state, { webcamSettings }) => {
-        return { ...state, webcamSettings: webcamSettings }
-    }),
-    on(ImageViewerActions.updateLightSettings, (state, { lightSettings }) => {
-        return { ...state, lightSettings: lightSettings }
-    }),
-    on(ImageViewerActions.updateIsDeleteLastImage, (state, { isDeleteLastImage }) => {
-        return { ...state, isDeleteLastImage: isDeleteLastImage }
-    }),
+
     on(ImageViewerActions.softDeleteImage, (state, { garageImageId }) => {
         if (state.currentImage.garageImageId === garageImageId) {
             return { ...state, currentImage: { garageImageId: 0 } }

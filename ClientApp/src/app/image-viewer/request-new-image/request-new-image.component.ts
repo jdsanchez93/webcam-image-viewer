@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { loadNewImage } from '../state/image-viewer.actions';
 import { selectCurrentPresignedUrl, selectIsLoading } from '../state/image-viewer.selectors';
+import { SmartLightSettings, WebcamSettings } from '../settings/settings.models';
 
 @Component({
   selector: 'app-request-new-image',
@@ -19,7 +20,18 @@ export class RequestNewImageComponent implements OnInit {
   }
 
   requestNewImage() {
-    this.store.dispatch(loadNewImage());
+    let webcamSettings: WebcamSettings = {
+      brightness: 100,
+      contrast: 32
+    };
+    let lightSettings: SmartLightSettings = {
+      isOn: false
+    }
+    let isDeleteLastImage = false;
+
+    //        isDeleteLastImage: (state.currentImage.garageImageId === 0 ? true : state.isDeleteLastImage),
+
+    this.store.dispatch(loadNewImage({ webcamSettings, lightSettings, isDeleteLastImage }));
   }
 
 }

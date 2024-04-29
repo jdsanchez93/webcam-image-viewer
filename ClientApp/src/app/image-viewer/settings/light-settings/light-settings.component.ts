@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl, UntypedFormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs';
-import { updateLightSettings } from '../../state/image-viewer.actions';
 import { initialState } from '../../state/image-viewer.reducer';
 
 @Component({
@@ -19,16 +18,11 @@ export class LightSettingsComponent implements OnInit {
   constructor(private fb: UntypedFormBuilder, private store: Store) { }
 
   ngOnInit(): void {
-    this.lightSettingsForm.valueChanges
-      .pipe(
-        tap(x => this.store.dispatch(updateLightSettings({ lightSettings: x })))
-      )
-      .subscribe();
   }
 
   reset() {
-    this.lightSettingsForm.reset(initialState.lightSettings, { emitEvent: false });
-    this.store.dispatch(updateLightSettings({lightSettings: undefined}));
+    // this.lightSettingsForm.reset(initialState.lightSettings, { emitEvent: false });
+    // this.store.dispatch(updateLightSettings({lightSettings: undefined}));
   }
 
 }
