@@ -110,5 +110,7 @@
       }
     }
   },
-  "defaultProject": "webcam-image-viewer"
+  "cli": {
+    "analytics": false
+  }
 }

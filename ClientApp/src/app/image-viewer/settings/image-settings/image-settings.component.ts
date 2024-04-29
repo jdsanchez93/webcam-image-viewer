@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { take, tap } from 'rxjs';
 import { updateIsDeleteLastImage } from '../../state/image-viewer.actions';
@@ -13,11 +13,11 @@ import { selectIsDeleteLastImage } from '../../state/image-viewer.selectors';
 export class ImageSettingsComponent implements OnInit {
   checked: boolean = true;
 
-  imageSettingsFormGroup: FormGroup = this.fb.group({
-    isDeleteLastImage: new FormControl(false)
+  imageSettingsFormGroup: UntypedFormGroup = this.fb.group({
+    isDeleteLastImage: new UntypedFormControl(false)
   })
 
-  constructor(private fb: FormBuilder, private store: Store) { }
+  constructor(private fb: UntypedFormBuilder, private store: Store) { }
 
   ngOnInit(): void {
     this.store.select(selectIsDeleteLastImage)

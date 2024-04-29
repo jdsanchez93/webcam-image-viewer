@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, UntypedFormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs';
 import { updateLightSettings } from '../../state/image-viewer.actions';
@@ -12,11 +12,11 @@ import { initialState } from '../../state/image-viewer.reducer';
 })
 export class LightSettingsComponent implements OnInit {
 
-  lightSettingsForm: FormGroup = this.fb.group({
-    isOn: new FormControl()
+  lightSettingsForm: UntypedFormGroup = this.fb.group({
+    isOn: new UntypedFormControl()
   });
 
-  constructor(private fb: FormBuilder, private store: Store) { }
+  constructor(private fb: UntypedFormBuilder, private store: Store) { }
 
   ngOnInit(): void {
     this.lightSettingsForm.valueChanges

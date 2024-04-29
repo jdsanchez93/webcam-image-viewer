@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { take, tap } from 'rxjs';
 import { updateWebcamSettings } from '../../state/image-viewer.actions';
@@ -12,12 +12,12 @@ import { selectWebcamSettings } from '../../state/image-viewer.selectors';
   styleUrls: ['./webcam-settings.component.scss', '../settings.scss']
 })
 export class WebcamSettingsComponent implements OnInit {
-  webcamSettingsForm: FormGroup = this.fb.group({
-    brightness: new FormControl(),
-    contrast: new FormControl()
+  webcamSettingsForm: UntypedFormGroup = this.fb.group({
+    brightness: new UntypedFormControl(),
+    contrast: new UntypedFormControl()
   });
 
-  constructor(private fb: FormBuilder, private store: Store) { }
+  constructor(private fb: UntypedFormBuilder, private store: Store) { }
 
   ngOnInit(): void {
     this.store.select(selectWebcamSettings)
