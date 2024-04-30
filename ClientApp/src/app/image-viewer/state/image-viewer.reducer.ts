@@ -1,7 +1,6 @@
 import { createReducer, on } from "@ngrx/store"
 import { GarageImage } from "../image.models";
 import { QueueStatus } from "../queue-status/queue-status.models";
-import { SmartLightSettings, WebcamSettings } from "../settings/settings.models";
 import * as ImageViewerActions from './image-viewer.actions';
 
 export const imageViewerFeatureKey = 'imageViewer';
