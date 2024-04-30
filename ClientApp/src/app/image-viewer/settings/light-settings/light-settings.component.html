@@ -1,6 +1,0 @@
-<form [formGroup]="lightSettingsForm" class="form-grid">
-    <div class="slider-form">
-        <span>Light on?</span>
-        <mat-slide-toggle style="padding-left: 5px" formControlName="isOn" [disabled]="true">{{lightSettingsForm.controls['isOn'].value ? 'On' : 'Off'}}</mat-slide-toggle>
-    </div>
-</form>
