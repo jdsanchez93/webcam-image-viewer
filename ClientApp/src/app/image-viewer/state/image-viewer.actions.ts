@@ -23,8 +23,4 @@ export const loadQueueStatus = createAction('[Image Api] Load Pi Status');
 export const loadQueueStatusSuccess = createAction('[Image Api] Load Pi Status Success', props<{ statusMessage: string }>());
 export const loadQueueStatusError = createAction('[Image Api] Load Pi Status Error', props<{ httpErrorResponse: HttpErrorResponse }>());
 
-// export const updateWebcamSettings = createAction('[Image Viewer] Update Webcam Settings', props<{ webcamSettings: WebcamSettings }>());
-
-// export const updateLightSettings = createAction('[Image Viewer] Update Light Settings', props<{ lightSettings?: SmartLightSettings }>());
-
 export const updateIsDeleteLastImage = createAction('[Image Viewer] Update Is Delete Last Image', props<{ isDeleteLastImage: boolean }>());
