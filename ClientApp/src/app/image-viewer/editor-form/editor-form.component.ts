@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GarageImage } from '../image.models';
 
 @Component({
@@ -8,12 +8,12 @@ import { GarageImage } from '../image.models';
   styleUrls: ['./editor-form.component.scss']
 })
 export class EditorFormComponent implements OnInit{
-  imageForm: UntypedFormGroup = this.fb.group({
-    numberOfCars: new UntypedFormControl('', Validators.required)
-  });
   @Input() garageImage!: GarageImage;
+  imageForm: FormGroup = this.fb.group({
+    numberOfCars: new FormControl<number | null>(null, Validators.required)
+  });
 
-  constructor(private fb: UntypedFormBuilder) { }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     if (this.garageImage.numberOfCars !== null) {
