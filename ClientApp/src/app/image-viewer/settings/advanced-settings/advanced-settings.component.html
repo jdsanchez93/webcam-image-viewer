@@ -2,13 +2,10 @@
     <mat-expansion-panel-header>
         <mat-panel-title>Advanced settings</mat-panel-title>
     </mat-expansion-panel-header>
-    <div>
-        <!-- <app-webcam-settings [brightness]="0" [contrast]="0"></app-webcam-settings> -->
-        <!-- <app-light-settings></app-light-settings> -->
-    </div>
 
     <form [formGroup]="advancedSettingsForm" class="form-grid">
-        <div formControlName="">
+
+        <ng-container formGroupName="webcamSettings">
             <div class="slider-form">
                 <span>Brightness</span>
                 <mat-slider thumbLabel min="0" max="255" tickInterval="auto" formControlName="brightness"></mat-slider>
@@ -17,6 +14,11 @@
                 <span>Contrast</span>
                 <mat-slider thumbLabel min="0" max="255" tickInterval="auto" formControlName="contrast"></mat-slider>
             </div>
+        </ng-container>
+
+        <div class="slider-form" formGroupName="lightSettings">
+            <span>Light on?</span>
+            <mat-slide-toggle style="padding-left: 5px" formControlName="isOn">{{this.advancedSettingsForm['controls'].lightSettings['controls'].isOn.value ? 'On' : 'Off'}}</mat-slide-toggle>
         </div>
 
     </form>

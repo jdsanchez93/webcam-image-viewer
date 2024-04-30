@@ -1,7 +1,4 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { LightSettingsComponent } from '../light-settings/light-settings.component';
-import { WebcamSettingsComponent } from '../webcam-settings/webcam-settings.component';
-import { Store } from '@ngrx/store';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { WebcamSettings } from '../settings.models';
 
@@ -12,39 +9,28 @@ import { WebcamSettings } from '../settings.models';
 })
 export class AdvancedSettingsComponent implements OnInit {
 
-  // @ViewChild(WebcamSettingsComponent) webcamSettingsComponent!: WebcamSettingsComponent;
-  // @ViewChild(LightSettingsComponent) lightSettingsComponent!: LightSettingsComponent;
-
-
-  // @Input() brightness!: number;
-  // @Input() contrast!: number;
-
-  initialWebcamSettings: WebcamSettings = {
-    brightness: 100,
-    contrast: 32
-  };
-
-  constructor(private store: Store, private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) { }
 
   advancedSettingsForm = this.fb.group({
-    webcamSettings: new FormGroup({
+    webcamSettings: this.fb.group({
       brightness: new FormControl(100, { nonNullable: true }),
       contrast: new FormControl(32, { nonNullable: true }),
+
     }),
     lightSettings: this.fb.group({
-      isOn: new FormControl(false, { nonNullable: true }),
-    }),
-    isDeleteLastImage: new FormControl(false, { nonNullable: true })
+      isOn: new FormControl({ value: false, disabled: true }, { nonNullable: true }),
+    })
   });
-
 
   ngOnInit(): void {
   }
 
-
   reset() {
-    // this.webcamSettingsComponent.reset();
-    // this.lightSettingsComponent.reset();
+    this.advancedSettingsForm.reset();
+  }
+
+  public getFormData() {
+    return this.advancedSettingsForm.getRawValue();
   }
 
 }
