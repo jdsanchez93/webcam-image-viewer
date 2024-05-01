@@ -1,13 +1,12 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { WebcamSettings } from '../settings.models';
+import { Component } from '@angular/core';
+import { FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-advanced-settings',
   templateUrl: './advanced-settings.component.html',
   styleUrls: ['./advanced-settings.component.scss', '../settings.scss']
 })
-export class AdvancedSettingsComponent implements OnInit {
+export class AdvancedSettingsComponent {
 
   constructor(private fb: FormBuilder) { }
 
@@ -21,9 +20,6 @@ export class AdvancedSettingsComponent implements OnInit {
       isOn: new FormControl({ value: false, disabled: true }, { nonNullable: true }),
     })
   });
-
-  ngOnInit(): void {
-  }
 
   reset() {
     this.advancedSettingsForm.reset();
