@@ -5,7 +5,7 @@
 <mat-menu #menu="matMenu">
 
   <ng-container *ngIf="this.isSignedIn else elseBlock">
-    <mat-card>
+    <mat-card appearance="outlined">
       <mat-card-header>
         <img mat-card-avatar [src]="userProfile?.picture || 'https://material.angular.io/assets/img/examples/shiba1.jpg'">
         <mat-card-title>{{userProfile?.name || userProfile?.userName}}</mat-card-title>
