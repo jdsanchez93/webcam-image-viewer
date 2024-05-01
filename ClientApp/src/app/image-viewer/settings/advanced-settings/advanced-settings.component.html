@@ -8,11 +8,13 @@
         <ng-container formGroupName="webcamSettings">
             <div class="slider-form">
                 <span>Brightness</span>
-                <mat-slider thumbLabel min="0" max="255" tickInterval="auto" formControlName="brightness"></mat-slider>
+                <!-- TODO: The 'tickInterval' property no longer exists -->
+                <mat-slider thumbLabel min="0" max="255" formControlName="brightness"><input matSliderThumb /></mat-slider>
             </div>
             <div class="slider-form">
                 <span>Contrast</span>
-                <mat-slider thumbLabel min="0" max="255" tickInterval="auto" formControlName="contrast"></mat-slider>
+                <!-- TODO: The 'tickInterval' property no longer exists -->
+                <mat-slider thumbLabel min="0" max="255" formControlName="contrast"><input matSliderThumb /></mat-slider>
             </div>
         </ng-container>
 
