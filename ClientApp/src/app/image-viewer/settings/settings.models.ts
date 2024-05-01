@@ -1,6 +1,6 @@
 export interface WebcamSettings {
-    brightness?: number;
-    contrast?: number;
+    brightness: number;
+    contrast: number;
 }
 
 export interface SmartLightSettings {

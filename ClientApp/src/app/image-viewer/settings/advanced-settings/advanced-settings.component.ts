@@ -1,6 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { LightSettingsComponent } from '../light-settings/light-settings.component';
-import { WebcamSettingsComponent } from '../webcam-settings/webcam-settings.component';
+import { Component } from '@angular/core';
+import { FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-advanced-settings',
@@ -9,14 +8,25 @@ import { WebcamSettingsComponent } from '../webcam-settings/webcam-settings.comp
 })
 export class AdvancedSettingsComponent {
 
-  @ViewChild(WebcamSettingsComponent) webcamSettingsComponent!: WebcamSettingsComponent;
-  @ViewChild(LightSettingsComponent) lightSettingsComponent!: LightSettingsComponent;
+  constructor(private fb: FormBuilder) { }
 
-  constructor() { }
+  advancedSettingsForm = this.fb.group({
+    webcamSettings: this.fb.group({
+      brightness: new FormControl(100, { nonNullable: true }),
+      contrast: new FormControl(32, { nonNullable: true }),
+
+    }),
+    lightSettings: this.fb.group({
+      isOn: new FormControl({ value: false, disabled: true }, { nonNullable: true }),
+    })
+  });
 
   reset() {
-    this.webcamSettingsComponent.reset();
-    this.lightSettingsComponent.reset();
+    this.advancedSettingsForm.reset();
+  }
+
+  public getFormData() {
+    return this.advancedSettingsForm.getRawValue();
   }
 
 }

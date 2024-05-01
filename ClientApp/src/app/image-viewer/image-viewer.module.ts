@@ -19,9 +19,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { QueueStatusComponent } from './queue-status/queue-status.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { WebcamSettingsComponent } from './settings/webcam-settings/webcam-settings.component';
 import { MatSliderModule } from '@angular/material/slider';
-import { LightSettingsComponent } from './settings/light-settings/light-settings.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AdvancedSettingsComponent } from './settings/advanced-settings/advanced-settings.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -33,8 +31,6 @@ import { ImageSettingsComponent } from './settings/image-settings/image-settings
     HistoryComponent,
     EditorFormComponent,
     QueueStatusComponent,
-    WebcamSettingsComponent,
-    LightSettingsComponent,
     AdvancedSettingsComponent,
     ImageSettingsComponent,
   ],

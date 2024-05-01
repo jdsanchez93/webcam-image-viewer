@@ -1,7 +1,6 @@
 import { createReducer, on } from "@ngrx/store"
 import { GarageImage } from "../image.models";
 import { QueueStatus } from "../queue-status/queue-status.models";
-import { SmartLightSettings, WebcamSettings } from "../settings/settings.models";
 import * as ImageViewerActions from './image-viewer.actions';
 
 export const imageViewerFeatureKey = 'imageViewer';
@@ -11,8 +10,6 @@ export interface ImageViewerState {
     currentImage: GarageImage
     mostRecentImages: GarageImage[],
     queueStatus?: QueueStatus,
-    webcamSettings: WebcamSettings
-    lightSettings?: SmartLightSettings
     isDeleteLastImage: boolean
 }
 
@@ -22,10 +19,6 @@ export const initialState: ImageViewerState = {
         garageImageId: 0
     },
     mostRecentImages: [],
-    webcamSettings: {
-        brightness: 100,
-        contrast: 32
-    },
     isDeleteLastImage: false
 }
 
@@ -63,12 +56,6 @@ export const imageViewerReducer = createReducer(
     }),
     on(ImageViewerActions.loadQueueStatusError, (state, { httpErrorResponse }) => {
         return { ...state, loading: false, queueStatus: { message: httpErrorResponse.error, iconName: 'error' } }
-    }),
-    on(ImageViewerActions.updateWebcamSettings, (state, { webcamSettings }) => {
-        return { ...state, webcamSettings: webcamSettings }
-    }),
-    on(ImageViewerActions.updateLightSettings, (state, { lightSettings }) => {
-        return { ...state, lightSettings: lightSettings }
     }),
     on(ImageViewerActions.updateIsDeleteLastImage, (state, { isDeleteLastImage }) => {
         return { ...state, isDeleteLastImage: isDeleteLastImage }
