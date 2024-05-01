@@ -3,7 +3,7 @@ import { createAction, props } from '@ngrx/store';
 import { GarageImage } from '../image.models';
 import { SmartLightSettings, WebcamSettings } from '../settings/settings.models';
 
-export const loadNewImage = createAction('[Image Viewer Api] Load New Image', props<{ webcamSettings: WebcamSettings, lightSettings: SmartLightSettings, isDeleteLastImage: boolean }>());
+export const loadNewImage = createAction('[Image Viewer Api] Load New Image', props<{ webcamSettings: WebcamSettings, lightSettings: SmartLightSettings }>());
 export const loadNewImageSuccess = createAction('[Image Viewer Api] Load New Image Success', props<{ currentImage: GarageImage }>());
 export const loadNewImageError = createAction('[Image Viewer Api] Load New Image Error');
 
