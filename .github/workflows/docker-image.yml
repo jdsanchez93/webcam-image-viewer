@@ -36,8 +36,6 @@ jobs:
       id: build-image
       shell: bash
       run: ./build-scripts/docker.sh $VERSION $VERSION_TAG
-      with:
-        node-version: 18.13.x
       env:
         VERSION: "${{ github.event_name == 'push' && steps.version.outputs.version || format('{0}-prerelease.{1}', steps.version.outputs.version, steps.version.outputs.increment) }}"
         VERSION_TAG: "${{ github.event_name == 'push' && steps.version.outputs.version_tag || '' }}"
