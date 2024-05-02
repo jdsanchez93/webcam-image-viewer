@@ -6,6 +6,7 @@
       <a mat-list-item routerLink="image-viewer">New Image</a>
       <a mat-list-item routerLink="image-viewer/history">History</a>
       <a mat-list-item routerLink="image-viewer/status">Status</a>
+      <a mat-list-item routerLink="profile">Profile</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -16,7 +17,7 @@
       </button>
       <span>Garage Webcam</span>
       <span class="toolbar-spacer"></span>
-      <app-profile></app-profile>
+      <app-profile-menu></app-profile-menu>
     </mat-toolbar>
 
     <div [ngStyle]="{'padding':(isHandset$ | async) ? '15px 15px' : '20px 50px' }">
