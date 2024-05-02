@@ -7,7 +7,7 @@
 
         <ng-template #elseBlock>
             <ng-container *ngIf="this.QueueStatus$ | async as s">
-                <mat-card>
+                <mat-card appearance="outlined">
                     <div style="display: grid; grid-template-columns: 25px auto; gap: 10px; align-items: center;">
                         <mat-icon>{{s.iconName}}</mat-icon>
                         <span>{{s.message}}</span>

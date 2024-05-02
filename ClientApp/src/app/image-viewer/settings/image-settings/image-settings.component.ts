@@ -14,24 +14,24 @@ export class ImageSettingsComponent implements OnInit {
   checked: boolean = true;
 
   imageSettingsFormGroup: FormGroup = this.fb.group({
-    isDeleteLastImage: new FormControl(false)
+    isDeleteLastImage: new FormControl(false, { nonNullable: true })
   })
 
   constructor(private fb: FormBuilder, private store: Store) { }
 
   ngOnInit(): void {
     this.store.select(selectIsDeleteLastImage)
-      .pipe(
-        take(1),
-        tap(x => this.imageSettingsFormGroup.setValue({ isDeleteLastImage: x }))
-      )
-      .subscribe();
+    .pipe(
+      take(1),
+      tap(x => this.imageSettingsFormGroup.setValue({ isDeleteLastImage: x }))
+    )
+    .subscribe();
 
-    this.imageSettingsFormGroup.valueChanges
-      .pipe(
-        tap(x => this.store.dispatch(updateIsDeleteLastImage({ isDeleteLastImage: x.isDeleteLastImage })))
-      )
-      .subscribe();
+  this.imageSettingsFormGroup.valueChanges
+    .pipe(
+      tap(x => this.store.dispatch(updateIsDeleteLastImage({ isDeleteLastImage: x.isDeleteLastImage })))
+    )
+    .subscribe();
   }
 
 }

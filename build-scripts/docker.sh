@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 IMAGE_TAG=$1
 
 IFS='/' read -ra SPLIT <<< "$GITHUB_REPOSITORY"

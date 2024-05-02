@@ -7,11 +7,11 @@ import { GarageImage } from '../image.models';
   templateUrl: './editor-form.component.html',
   styleUrls: ['./editor-form.component.scss']
 })
-export class EditorFormComponent implements OnInit{
+export class EditorFormComponent implements OnInit {
+  @Input({ required: true }) garageImage!: GarageImage;
   imageForm: FormGroup = this.fb.group({
-    numberOfCars: new FormControl('', Validators.required)
+    numberOfCars: new FormControl<number | null>(null, Validators.required)
   });
-  @Input() garageImage!: GarageImage;
 
   constructor(private fb: FormBuilder) { }
 

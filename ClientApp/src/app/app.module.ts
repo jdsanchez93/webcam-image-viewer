@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { AuthModule } from "./auth/auth.module";
+import { ProfileMenuComponent } from './auth/profile-menu/profile-menu.component';
 
 @NgModule({
     declarations: [
@@ -36,7 +36,7 @@ import { AuthModule } from "./auth/auth.module";
         MatSidenavModule,
         MatIconModule,
         MatListModule,
-        AuthModule
+        ProfileMenuComponent
     ]
 })
 export class AppModule { }

@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { map, mergeMap, of, tap } from 'rxjs';
+import { mergeMap, of, tap } from 'rxjs';
 import { UserProfile } from '../auth.models';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-profile',
+  standalone: true,
+  imports: [MatCardModule, MatButtonModule],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
