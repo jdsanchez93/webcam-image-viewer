@@ -1,4 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@use '@angular/material-experimental' as matx;
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0 }
+
+$dark-theme: matx.define-theme((
+  color: (
+    theme-type: dark,
+    primary: matx.$m3-cyan-palette,
+    tertiary: matx.$m3-orange-palette,
+  )
+));
+
+// @include matx.core-theme($dark-theme);
+html {
+  // Apply the base theme at the root, so it will be inherited by the whole app.
+  @include mat.all-component-themes($dark-theme);
+}
