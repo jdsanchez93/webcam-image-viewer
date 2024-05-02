@@ -1,4 +1,4 @@
-FROM node:16.13.0 as clientbuild
+FROM node:18 as clientbuild
 WORKDIR /usr/local/app
 COPY ./ClientApp/package.json ./ClientApp/package-lock.json .
 RUN npm install
