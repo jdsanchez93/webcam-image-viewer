@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.JsonPatch;
 using System.Text.Json;
+using System.Security.Claims;
 
 namespace webcam_image_viewer.Controllers;
 
@@ -36,6 +37,7 @@ public class WebcamController : ControllerBase
     {
         try
         {
+            var user = GetSubAsGuid();
             // Mark image for deletion
             var i = _context.GarageImages.Find(queueMessage.LastImageId);
             if (i == null)
@@ -45,6 +47,8 @@ public class WebcamController : ControllerBase
             else
             {
                 i.IsDelete = true;
+                i.ModifiedBy = user;
+                i.ModifiedDate = DateTime.Now;
             }
 
             var queueName = _configuration["Aws:QueueUrl"];
@@ -75,6 +79,8 @@ public class WebcamController : ControllerBase
                 S3Key = s3key,
                 ImageDate = DateTime.UtcNow,
                 PresignedUrl = presignedUrl,
+                CreatedBy = user,
+                CreatedDate = DateTime.Now
             };
 
             _context.GarageImages.Add(garageImage);
@@ -233,4 +239,15 @@ public class WebcamController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
     }
+
+    private Guid? GetSubAsGuid()
+    {
+        var sub = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (Guid.TryParse(sub, out Guid result)) {
+            return result;
+        }
+        return null;
+    }
+
 }
