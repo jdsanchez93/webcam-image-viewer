@@ -21,7 +21,7 @@ public class WebcamController : ControllerBase
     private readonly IAmazonSQS _sqsClient;
     private readonly IAmazonS3 _s3Client;
 
-    public const int MAX_RETRIES = 5;
+    public const int MAX_RETRIES = 6;
 
     public WebcamController(ILogger<WebcamController> logger, IConfiguration configuration, WebcamDbContext context, IAmazonSQS sqsClient, IAmazonS3 s3Client)
     {
