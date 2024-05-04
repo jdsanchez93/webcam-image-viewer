@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace webcam_image_viewer.Entities;
 
 [Table("GarageImage")]
-public class GarageImage
+public class GarageImage : TrackedEntity
 {
     public int GarageImageId { get; set; }
 
