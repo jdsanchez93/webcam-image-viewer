@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using webcam_image_viewer.OpenIdConnect;
+using webcam_image_viewer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,10 +50,16 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.AddDbContext<WebcamDbContext>(
-    dbContextOptions => dbContextOptions
-        .UseMySql(builder.Configuration.GetConnectionString("Mysql"), new MySqlServerVersion(new Version(8, 0, 28)))
-);
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddTransient<UserResolverService>();
+
+builder.Services.AddTransient<ExtendedWebcamDbContext>();
+
+// builder.Services.AddDbContext<WebcamDbContext>(
+//     dbContextOptions => dbContextOptions
+//         .UseMySql(builder.Configuration.GetConnectionString("Mysql"), new MySqlServerVersion(new Version(8, 0, 28)))
+// );
 
 var app = builder.Build();
 
