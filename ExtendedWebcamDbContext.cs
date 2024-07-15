@@ -10,6 +10,6 @@ public class ExtendedWebcamDbContext
     {
         _context = context;
         _userService = userService;
-        _context._currentUserExternalId = _userService.GetUserSub();
+        _context._currentUserSub = _userService.GetUserSub();
     }
 }

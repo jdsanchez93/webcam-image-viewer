@@ -37,7 +37,6 @@ public class WebcamController : ControllerBase
     {
         try
         {
-            var user = GetWebcamUser();
             // Mark image for deletion
             var i = _context.GarageImages.Find(queueMessage.LastImageId);
             if (i == null)
@@ -47,8 +46,6 @@ public class WebcamController : ControllerBase
             else
             {
                 i.IsDelete = true;
-                i.ModifiedBy = user;
-                i.ModifiedDate = DateTime.UtcNow;
             }
 
             var queueName = _configuration["Aws:QueueUrl"];
@@ -79,8 +76,6 @@ public class WebcamController : ControllerBase
                 S3Key = s3key,
                 ImageDate = DateTime.UtcNow,
                 PresignedUrl = presignedUrl,
-                CreatedBy = user,
-                CreatedDate = DateTime.UtcNow
             };
 
             _context.GarageImages.Add(garageImage);
@@ -238,22 +233,6 @@ public class WebcamController : ControllerBase
             _logger.LogError(e, "GetQueueStatus");
             return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
-    }
-
-    private WebcamUser? GetWebcamUser()
-    {
-        var sub = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        if (!Guid.TryParse(sub, out Guid result))
-        {
-            return null;
-        }
-
-        var user = _context.WebcamUsers.Find(result) ?? new WebcamUser()
-        {
-            Sub = result
-        };
-        return user;
     }
 
 }

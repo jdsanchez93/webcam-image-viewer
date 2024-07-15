@@ -7,17 +7,17 @@ namespace webcam_image_viewer
     {
         public DbSet<GarageImage> GarageImages => Set<GarageImage>();
         public DbSet<WebcamUser> WebcamUsers => Set<WebcamUser>();
+        public Guid? _currentUserSub;
 
         public WebcamDbContext(DbContextOptions<WebcamDbContext> dbContextOptions) : base(dbContextOptions)
         {
         }
 
 
-        public Guid? _currentUserExternalId;
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var user = await WebcamUsers.SingleAsync(x => x.Sub == _currentUserExternalId, cancellationToken: cancellationToken);
+            var user = await WebcamUsers.FirstAsync(x => x.Sub == _currentUserSub, cancellationToken: cancellationToken);
 
             AddCreatedByOrUpdatedBy(user);
 
@@ -26,15 +26,17 @@ namespace webcam_image_viewer
 
         public override int SaveChanges()
         {
-            var user = WebcamUsers.Single(x => x.Sub == _currentUserExternalId);
+            var user = WebcamUsers.First(x => x.Sub == _currentUserSub);
 
             AddCreatedByOrUpdatedBy(user);
 
             return base.SaveChanges();
         }
 
-        public void AddCreatedByOrUpdatedBy(WebcamUser user)
+        public void AddCreatedByOrUpdatedBy(WebcamUser? user)
         {
+            user ??= GetNewWebcamUser();
+
             foreach (var changedEntity in ChangeTracker.Entries())
             {
                 if (changedEntity.Entity is TrackedEntity entity)
@@ -52,6 +54,19 @@ namespace webcam_image_viewer
                     }
                 }
             }
+        }
+
+        private WebcamUser? GetNewWebcamUser()
+        {
+            if (_currentUserSub == null)
+            {
+                return null;
+            }
+            return new WebcamUser()
+            {
+                Sub = (Guid)_currentUserSub
+            };
+
         }
     }
 
