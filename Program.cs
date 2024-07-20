@@ -56,10 +56,10 @@ builder.Services.AddTransient<UserResolverService>();
 
 builder.Services.AddTransient<ExtendedWebcamDbContext>();
 
-// builder.Services.AddDbContext<WebcamDbContext>(
-//     dbContextOptions => dbContextOptions
-//         .UseMySql(builder.Configuration.GetConnectionString("Mysql"), new MySqlServerVersion(new Version(8, 0, 28)))
-// );
+builder.Services.AddDbContext<WebcamDbContext>(
+    dbContextOptions => dbContextOptions
+        .UseMySql(builder.Configuration.GetConnectionString("Mysql"), new MySqlServerVersion(new Version(8, 0, 28)))
+);
 
 var app = builder.Build();
 

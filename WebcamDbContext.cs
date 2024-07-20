@@ -12,12 +12,11 @@ namespace webcam_image_viewer
         {
         }
 
-
         public Guid? _currentUserExternalId;
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var user = await WebcamUsers.SingleAsync(x => x.Sub == _currentUserExternalId, cancellationToken: cancellationToken);
+            var user = await WebcamUsers.SingleOrDefaultAsync(x => x.Sub == _currentUserExternalId, cancellationToken: cancellationToken);
 
             AddCreatedByOrUpdatedBy(user);
 
@@ -26,14 +25,14 @@ namespace webcam_image_viewer
 
         public override int SaveChanges()
         {
-            var user = WebcamUsers.Single(x => x.Sub == _currentUserExternalId);
+            var user = WebcamUsers.SingleOrDefault(x => x.Sub == _currentUserExternalId);
 
             AddCreatedByOrUpdatedBy(user);
 
             return base.SaveChanges();
         }
 
-        public void AddCreatedByOrUpdatedBy(WebcamUser user)
+        public void AddCreatedByOrUpdatedBy(WebcamUser? user)
         {
             foreach (var changedEntity in ChangeTracker.Entries())
             {
