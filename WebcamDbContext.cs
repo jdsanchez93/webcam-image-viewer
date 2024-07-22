@@ -12,22 +12,18 @@ namespace webcam_image_viewer
         {
         }
 
-        public Guid? _currentUserExternalId;
+        public string? _currentUserExternalId;
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var user = await WebcamUsers.SingleOrDefaultAsync(x => x.Sub == _currentUserExternalId, cancellationToken: cancellationToken);
-
-            AddCreatedByOrUpdatedBy(user);
+            AddCreatedByOrUpdatedBy(GetWebcamUser());
 
             return await base.SaveChangesAsync(true, cancellationToken);
         }
 
         public override int SaveChanges()
         {
-            var user = WebcamUsers.SingleOrDefault(x => x.Sub == _currentUserExternalId);
-
-            AddCreatedByOrUpdatedBy(user);
+            AddCreatedByOrUpdatedBy(GetWebcamUser());
 
             return base.SaveChanges();
         }
@@ -42,15 +38,29 @@ namespace webcam_image_viewer
                     {
                         case EntityState.Added:
                             entity.CreatedBy = user;
+                            entity.CreatedDate = DateTime.UtcNow;
                             entity.ModifiedBy = user;
+                            entity.ModifiedDate = DateTime.UtcNow;
                             break;
                         case EntityState.Modified:
                             Entry(entity).Reference(x => x.CreatedBy).IsModified = false;
                             entity.ModifiedBy = user;
+                            entity.ModifiedDate = DateTime.UtcNow;
                             break;
                     }
                 }
             }
+        }
+
+        private WebcamUser? GetWebcamUser()
+        {
+            if (!Guid.TryParse(_currentUserExternalId, out Guid result))
+            {
+                return null;
+            }
+
+            var user = WebcamUsers.Find(result) ?? WebcamUsers.Add(new WebcamUser() { Sub = result }).Entity;
+            return user;
         }
     }
 
