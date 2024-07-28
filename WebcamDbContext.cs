@@ -16,24 +16,25 @@ namespace webcam_image_viewer
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            AddCreatedByOrUpdatedBy(GetWebcamUser());
+            AddCreatedByOrUpdatedBy();
 
             return await base.SaveChangesAsync(true, cancellationToken);
         }
 
         public override int SaveChanges()
         {
-            AddCreatedByOrUpdatedBy(GetWebcamUser());
+            AddCreatedByOrUpdatedBy();
 
             return base.SaveChanges();
         }
 
-        public void AddCreatedByOrUpdatedBy(WebcamUser? user)
+        public void AddCreatedByOrUpdatedBy()
         {
             foreach (var changedEntity in ChangeTracker.Entries())
             {
                 if (changedEntity.Entity is TrackedEntity entity)
                 {
+                    var user = GetWebcamUser();
                     switch (changedEntity.State)
                     {
                         case EntityState.Added:
