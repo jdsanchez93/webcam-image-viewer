@@ -5,6 +5,8 @@ using webcam_image_viewer;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using webcam_image_viewer.OpenIdConnect;
+using webcam_image_viewer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,38 +45,16 @@ builder.Services.AddAuthentication(options =>
         };
         options.Events = new OpenIdConnectEvents
         {
-            OnRedirectToIdentityProviderForSignOut = OnRedirectToIdentityProviderForSignOut,
-            OnSignedOutCallbackRedirect = OnSignedOutCallbackRedirect,
+            OnRedirectToIdentityProviderForSignOut = OpenIdConnectHelper.OnRedirectToIdentityProviderForSignOut,
+            OnSignedOutCallbackRedirect = OpenIdConnectHelper.OnSignedOutCallbackRedirect,
         };
     });
 
-static Task OnSignedOutCallbackRedirect(RemoteSignOutContext context)
-{
-    var configuration = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-    context.Properties ??= new Microsoft.AspNetCore.Authentication.AuthenticationProperties()
-        {
-            RedirectUri = context.Options.SignedOutRedirectUri
-        };
-    return Task.CompletedTask;
-}
+builder.Services.AddHttpContextAccessor();
 
-static Task OnRedirectToIdentityProviderForSignOut(RedirectContext context)
-{
-    var configuration = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-    context.ProtocolMessage.Scope = "openid";
-    context.ProtocolMessage.ResponseType = "code";
+builder.Services.AddTransient<UserResolverService>();
 
-    var cognitoDomain = configuration["Cognito:Domain"];
-    var clientId = configuration["Cognito:ClientId"];
-    var appSignOutUrl = configuration["Cognito:AppSignOutUrl"];
-
-    var logoutUrl = $"{context.Request.Scheme}://{context.Request.Host}{appSignOutUrl}";
-
-    context.ProtocolMessage.IssuerAddress = $"{cognitoDomain}/logout?client_id={clientId}" +
-                                            $"&logout_uri={logoutUrl}";
-
-    return Task.CompletedTask;
-}
+builder.Services.AddTransient<ExtendedWebcamDbContext>();
 
 builder.Services.AddDbContext<WebcamDbContext>(
     dbContextOptions => dbContextOptions
